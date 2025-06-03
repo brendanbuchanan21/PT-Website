@@ -3,6 +3,10 @@ import '../styles.css'
 import HeroSection from '@/components/Hero-Section'
 import AboutUsSection from '@/components/About-us-section'
 import ServicesOverviewSection from '@/components/Services-section'
+import WhyChooseUsSection from '@/components/Choose-us-section'
+import TestimonialsSection from '@/components/Testimonials-section'
+import NewsletterSignup from '@/components/Newsletter'
+import Footer from '@/components/Footer'
 
 export const Route = createFileRoute('/')({
   component: App,
@@ -16,6 +20,10 @@ function App() {
       </header>
       <AboutUsSection />
       <ServicesOverviewSection />
+      <WhyChooseUsSection />
+      <TestimonialsSection />
+      <NewsletterSignup />
+      <Footer />
     </div>
   )
 }
