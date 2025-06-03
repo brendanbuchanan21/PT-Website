@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import logo from '../logo.svg'
+import '../styles.css'
+import HeroSection from '@/components/Hero-Section'
 
 export const Route = createFileRoute('/')({
   component: App,
@@ -7,33 +8,49 @@ export const Route = createFileRoute('/')({
 
 function App() {
   return (
-    <div className="text-center">
-      <header className="min-h-screen flex flex-col items-center justify-center bg-[#282c34] text-white text-[calc(10px+2vmin)]">
-        <img
-          src={logo}
-          className="h-[40vmin] pointer-events-none animate-[spin_20s_linear_infinite]"
-          alt="logo"
-        />
-        <p>
-          Edit <code>src/routes/index.tsx</code> and save to reload.
-        </p>
-        <a
-          className="text-[#61dafb] hover:underline"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <a
-          className="text-[#61dafb] hover:underline"
-          href="https://tanstack.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn TanStack
-        </a>
+    <div>
+      <header>
+       <HeroSection />
       </header>
     </div>
   )
 }
+
+{/* Status colors: 
+Style Name
+Hex Code
+Usage
+Status / Success
+#388E3C
+Form success messages
+Status / Error
+#C62828
+Form error states
+Status / Warning
+#FBC02D
+Alerts, form cautions
+
+Background colors: Style Name
+Hex Code
+Usage
+Background / Default
+#FFF8F1
+Page backgrounds
+Background / Alt
+#F5F5F5
+Section blocks, testimonials
+Background / Dark
+#581845
+Footer, headers (dark mode)
+Text colors: Style Name
+Hex Code
+Usage
+Text / Primary
+#424242
+Main body text, navigation
+Text / Inverse
+#FFFFFF
+Text on dark backgrounds
+Text / Muted
+#757575
+Secondary text, labels */}
