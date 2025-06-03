@@ -1,6 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
 import '../styles.css'
 import HeroSection from '@/components/Hero-Section'
+import AboutUsSection from '@/components/About-us-section'
+import ServicesOverviewSection from '@/components/Services-section'
 
 export const Route = createFileRoute('/')({
   component: App,
@@ -12,6 +14,8 @@ function App() {
       <header>
        <HeroSection />
       </header>
+      <AboutUsSection />
+      <ServicesOverviewSection />
     </div>
   )
 }
