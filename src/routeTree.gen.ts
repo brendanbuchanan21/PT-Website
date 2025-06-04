@@ -11,21 +11,28 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as SignupImport } from './routes/signup'
 import { Route as SigninImport } from './routes/signin'
+import { Route as BlogImport } from './routes/blog'
+import { Route as BlogPostPageImport } from './routes/Blog-post-page'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
 
-const SignupRoute = SignupImport.update({
-  id: '/signup',
-  path: '/signup',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const SigninRoute = SigninImport.update({
   id: '/signin',
   path: '/signin',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const BlogRoute = BlogImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const BlogPostPageRoute = BlogPostPageImport.update({
+  id: '/Blog-post-page',
+  path: '/Blog-post-page',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -46,18 +53,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/Blog-post-page': {
+      id: '/Blog-post-page'
+      path: '/Blog-post-page'
+      fullPath: '/Blog-post-page'
+      preLoaderRoute: typeof BlogPostPageImport
+      parentRoute: typeof rootRoute
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogImport
+      parentRoute: typeof rootRoute
+    }
     '/signin': {
       id: '/signin'
       path: '/signin'
       fullPath: '/signin'
       preLoaderRoute: typeof SigninImport
-      parentRoute: typeof rootRoute
-    }
-    '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupImport
       parentRoute: typeof rootRoute
     }
   }
@@ -67,42 +81,47 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/Blog-post-page': typeof BlogPostPageRoute
+  '/blog': typeof BlogRoute
   '/signin': typeof SigninRoute
-  '/signup': typeof SignupRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/Blog-post-page': typeof BlogPostPageRoute
+  '/blog': typeof BlogRoute
   '/signin': typeof SigninRoute
-  '/signup': typeof SignupRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/Blog-post-page': typeof BlogPostPageRoute
+  '/blog': typeof BlogRoute
   '/signin': typeof SigninRoute
-  '/signup': typeof SignupRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/signin' | '/signup'
+  fullPaths: '/' | '/Blog-post-page' | '/blog' | '/signin'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/signin' | '/signup'
-  id: '__root__' | '/' | '/signin' | '/signup'
+  to: '/' | '/Blog-post-page' | '/blog' | '/signin'
+  id: '__root__' | '/' | '/Blog-post-page' | '/blog' | '/signin'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BlogPostPageRoute: typeof BlogPostPageRoute
+  BlogRoute: typeof BlogRoute
   SigninRoute: typeof SigninRoute
-  SignupRoute: typeof SignupRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BlogPostPageRoute: BlogPostPageRoute,
+  BlogRoute: BlogRoute,
   SigninRoute: SigninRoute,
-  SignupRoute: SignupRoute,
 }
 
 export const routeTree = rootRoute
@@ -116,18 +135,22 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/signin",
-        "/signup"
+        "/Blog-post-page",
+        "/blog",
+        "/signin"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
+    "/Blog-post-page": {
+      "filePath": "Blog-post-page.tsx"
+    },
+    "/blog": {
+      "filePath": "blog.tsx"
+    },
     "/signin": {
       "filePath": "signin.tsx"
-    },
-    "/signup": {
-      "filePath": "signup.tsx"
     }
   }
 }

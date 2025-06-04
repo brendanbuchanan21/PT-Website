@@ -12,7 +12,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* Logo */}
         <div className="text-xl font-bold">
-          <Link to="/">Revive Ortho</Link>
+          <Link to="/">OrthoNeuro</Link>
         </div>
 
         {/* Desktop Nav */}

@@ -13,7 +13,7 @@ export default function HeroSection() {
             Empower. Restore. Thrive.
           </h1>
           <p className="mt-4 text-lg text-[#424242]">
-            At Revive Orthoneuro, we specialize in helping you regain strength, movement, and confidence.
+            At Revive OrthoNeuro, we specialize in helping you regain strength, movement, and confidence.
           </p>
           <p className="mt-2 text-md text-[#757575]">
             Experience personalized physical therapy designed to heal, empower, and revitalize your life.

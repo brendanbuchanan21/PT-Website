@@ -7,9 +7,9 @@ export default function AboutUsSection() {
   return (
     <section className="bg-[#F5F5F5] py-20 px-6">
       <div className="max-w-6xl mx-auto text-center">
-        <h2 className="text-3xl lg:text-4xl font-bold text-[#581845] mb-6">About Revive Orthoneuro</h2>
+        <h2 className="text-3xl lg:text-4xl font-bold text-[#581845] mb-6">About Revive OrthoNeuro</h2>
         <p className="text-[#424242] max-w-2xl mx-auto mb-12">
-          At Revive Orthoneuro, we believe in more than just treatment — we believe in transformation. Our expert team is committed to helping patients return to full, vibrant lives through personalized care, state-of-the-art techniques, and heartfelt support.
+          At Revive OrthNeuro, we believe in more than just treatment — we believe in transformation. Our expert team is committed to helping patients return to full, vibrant lives through personalized care, state-of-the-art techniques, and heartfelt support.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
