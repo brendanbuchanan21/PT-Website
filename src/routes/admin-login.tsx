@@ -1,6 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Link } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../firebase.ts'
+import { LoaderPinwheel } from 'lucide-react'
 
 export const Route = createFileRoute('/admin-login')({
   component: RouteComponent,
@@ -8,11 +11,28 @@ export const Route = createFileRoute('/admin-login')({
 
 function RouteComponent() {
 
+
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loader, setLoader] = useState(false);
+  const [errorCredentials, setErrorCredentials] = useState(false);
 
-  const handleSignIn = () => {
-    
+
+  const handleSignIn = async () => {
+    try {
+      //regex for email and password
+      // if not pass regex, set error true and display conditional error
+      setLoader(true);
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate({ to: '/admin-dashboard'});
+    } catch (error) {
+      console.error(error);
+      setErrorCredentials(true);
+    } finally {
+      setLoader(false);
+    }
   }
 
 
@@ -42,14 +62,31 @@ function RouteComponent() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-    
-              <button
+              {
+                loader ? (
+                  <div className="flex justify-center py-2">
+                    <LoaderPinwheel className="h-8 w-8 text-[#581845] animate-spin" />
+                  </div>
+                ) : (
+                  <button
                 type="submit"
                 className="w-full bg-[#581845] text-white py-2 rounded-md font-semibold hover:bg-[#6e2356] transition"
+                onClick={handleSignIn}
               >
                 Sign In
               </button>
+                )
+              }
+              
             </form>
+            { errorCredentials && (
+              <div>
+                <p>Credentials do not match</p>
+            </div>
+            )
+
+            }
+            
           </div>
         </div>
       </div>
