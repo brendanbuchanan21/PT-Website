@@ -11,16 +11,17 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as SigninImport } from './routes/signin'
+import { Route as BlogPostPageImport } from './routes/blog-post-page'
 import { Route as BlogImport } from './routes/blog'
-import { Route as BlogPostPageImport } from './routes/Blog-post-page'
+import { Route as AdminLoginImport } from './routes/admin-login'
+import { Route as AdminDashboardImport } from './routes/admin-dashboard'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
 
-const SigninRoute = SigninImport.update({
-  id: '/signin',
-  path: '/signin',
+const BlogPostPageRoute = BlogPostPageImport.update({
+  id: '/blog-post-page',
+  path: '/blog-post-page',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -30,9 +31,15 @@ const BlogRoute = BlogImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const BlogPostPageRoute = BlogPostPageImport.update({
-  id: '/Blog-post-page',
-  path: '/Blog-post-page',
+const AdminLoginRoute = AdminLoginImport.update({
+  id: '/admin-login',
+  path: '/admin-login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminDashboardRoute = AdminDashboardImport.update({
+  id: '/admin-dashboard',
+  path: '/admin-dashboard',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -53,11 +60,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/Blog-post-page': {
-      id: '/Blog-post-page'
-      path: '/Blog-post-page'
-      fullPath: '/Blog-post-page'
-      preLoaderRoute: typeof BlogPostPageImport
+    '/admin-dashboard': {
+      id: '/admin-dashboard'
+      path: '/admin-dashboard'
+      fullPath: '/admin-dashboard'
+      preLoaderRoute: typeof AdminDashboardImport
+      parentRoute: typeof rootRoute
+    }
+    '/admin-login': {
+      id: '/admin-login'
+      path: '/admin-login'
+      fullPath: '/admin-login'
+      preLoaderRoute: typeof AdminLoginImport
       parentRoute: typeof rootRoute
     }
     '/blog': {
@@ -67,11 +81,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogImport
       parentRoute: typeof rootRoute
     }
-    '/signin': {
-      id: '/signin'
-      path: '/signin'
-      fullPath: '/signin'
-      preLoaderRoute: typeof SigninImport
+    '/blog-post-page': {
+      id: '/blog-post-page'
+      path: '/blog-post-page'
+      fullPath: '/blog-post-page'
+      preLoaderRoute: typeof BlogPostPageImport
       parentRoute: typeof rootRoute
     }
   }
@@ -81,47 +95,63 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/Blog-post-page': typeof BlogPostPageRoute
+  '/admin-dashboard': typeof AdminDashboardRoute
+  '/admin-login': typeof AdminLoginRoute
   '/blog': typeof BlogRoute
-  '/signin': typeof SigninRoute
+  '/blog-post-page': typeof BlogPostPageRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/Blog-post-page': typeof BlogPostPageRoute
+  '/admin-dashboard': typeof AdminDashboardRoute
+  '/admin-login': typeof AdminLoginRoute
   '/blog': typeof BlogRoute
-  '/signin': typeof SigninRoute
+  '/blog-post-page': typeof BlogPostPageRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/Blog-post-page': typeof BlogPostPageRoute
+  '/admin-dashboard': typeof AdminDashboardRoute
+  '/admin-login': typeof AdminLoginRoute
   '/blog': typeof BlogRoute
-  '/signin': typeof SigninRoute
+  '/blog-post-page': typeof BlogPostPageRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/Blog-post-page' | '/blog' | '/signin'
+  fullPaths:
+    | '/'
+    | '/admin-dashboard'
+    | '/admin-login'
+    | '/blog'
+    | '/blog-post-page'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/Blog-post-page' | '/blog' | '/signin'
-  id: '__root__' | '/' | '/Blog-post-page' | '/blog' | '/signin'
+  to: '/' | '/admin-dashboard' | '/admin-login' | '/blog' | '/blog-post-page'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin-dashboard'
+    | '/admin-login'
+    | '/blog'
+    | '/blog-post-page'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  BlogPostPageRoute: typeof BlogPostPageRoute
+  AdminDashboardRoute: typeof AdminDashboardRoute
+  AdminLoginRoute: typeof AdminLoginRoute
   BlogRoute: typeof BlogRoute
-  SigninRoute: typeof SigninRoute
+  BlogPostPageRoute: typeof BlogPostPageRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  BlogPostPageRoute: BlogPostPageRoute,
+  AdminDashboardRoute: AdminDashboardRoute,
+  AdminLoginRoute: AdminLoginRoute,
   BlogRoute: BlogRoute,
-  SigninRoute: SigninRoute,
+  BlogPostPageRoute: BlogPostPageRoute,
 }
 
 export const routeTree = rootRoute
@@ -135,22 +165,26 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/Blog-post-page",
+        "/admin-dashboard",
+        "/admin-login",
         "/blog",
-        "/signin"
+        "/blog-post-page"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/Blog-post-page": {
-      "filePath": "Blog-post-page.tsx"
+    "/admin-dashboard": {
+      "filePath": "admin-dashboard.tsx"
+    },
+    "/admin-login": {
+      "filePath": "admin-login.tsx"
     },
     "/blog": {
       "filePath": "blog.tsx"
     },
-    "/signin": {
-      "filePath": "signin.tsx"
+    "/blog-post-page": {
+      "filePath": "blog-post-page.tsx"
     }
   }
 }
