@@ -151,8 +151,18 @@ export default function Header() {
           </Link>
           {/* 👇 Account Links */}
           {user && (
+            <>
+            <Link 
+            to="/admin-dashboard"
+            className='block text-sm text-white text-center underline hover:text-[#FBC02D] transition'
+            onClick={() => {
+              navigate({to: "/admin-dashboard"});
+              setIsOpen(false);
+            }}
+            >Admin Dashboard</Link>
+
              <Link
-            to="/signin"
+            to="/admin-login"
             className="block text-sm text-white text-center underline hover:text-[#FBC02D] transition"
             onClick={() => {
               handleSignOut();
@@ -162,6 +172,7 @@ export default function Header() {
           >
             Sign Out
           </Link>
+          </>
           )}
          
         </div>

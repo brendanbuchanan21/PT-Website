@@ -13,9 +13,10 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as BlogImport } from './routes/blog'
 import { Route as AdminLoginImport } from './routes/admin-login'
-import { Route as AdminDashboardImport } from './routes/admin-dashboard'
 import { Route as BlogPostPageImport } from './routes/Blog-post-page'
 import { Route as IndexImport } from './routes/index'
+import { Route as AdminDashboardIndexImport } from './routes/admin-dashboard/index'
+import { Route as AdminDashboardPostIdImport } from './routes/admin-dashboard/$postId'
 
 // Create/Update Routes
 
@@ -31,12 +32,6 @@ const AdminLoginRoute = AdminLoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AdminDashboardRoute = AdminDashboardImport.update({
-  id: '/admin-dashboard',
-  path: '/admin-dashboard',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const BlogPostPageRoute = BlogPostPageImport.update({
   id: '/Blog-post-page',
   path: '/Blog-post-page',
@@ -46,6 +41,18 @@ const BlogPostPageRoute = BlogPostPageImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminDashboardIndexRoute = AdminDashboardIndexImport.update({
+  id: '/admin-dashboard/',
+  path: '/admin-dashboard/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminDashboardPostIdRoute = AdminDashboardPostIdImport.update({
+  id: '/admin-dashboard/$postId',
+  path: '/admin-dashboard/$postId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -67,13 +74,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogPostPageImport
       parentRoute: typeof rootRoute
     }
-    '/admin-dashboard': {
-      id: '/admin-dashboard'
-      path: '/admin-dashboard'
-      fullPath: '/admin-dashboard'
-      preLoaderRoute: typeof AdminDashboardImport
-      parentRoute: typeof rootRoute
-    }
     '/admin-login': {
       id: '/admin-login'
       path: '/admin-login'
@@ -88,6 +88,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogImport
       parentRoute: typeof rootRoute
     }
+    '/admin-dashboard/$postId': {
+      id: '/admin-dashboard/$postId'
+      path: '/admin-dashboard/$postId'
+      fullPath: '/admin-dashboard/$postId'
+      preLoaderRoute: typeof AdminDashboardPostIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/admin-dashboard/': {
+      id: '/admin-dashboard/'
+      path: '/admin-dashboard'
+      fullPath: '/admin-dashboard'
+      preLoaderRoute: typeof AdminDashboardIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -96,26 +110,29 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/Blog-post-page': typeof BlogPostPageRoute
-  '/admin-dashboard': typeof AdminDashboardRoute
   '/admin-login': typeof AdminLoginRoute
   '/blog': typeof BlogRoute
+  '/admin-dashboard/$postId': typeof AdminDashboardPostIdRoute
+  '/admin-dashboard': typeof AdminDashboardIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/Blog-post-page': typeof BlogPostPageRoute
-  '/admin-dashboard': typeof AdminDashboardRoute
   '/admin-login': typeof AdminLoginRoute
   '/blog': typeof BlogRoute
+  '/admin-dashboard/$postId': typeof AdminDashboardPostIdRoute
+  '/admin-dashboard': typeof AdminDashboardIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/Blog-post-page': typeof BlogPostPageRoute
-  '/admin-dashboard': typeof AdminDashboardRoute
   '/admin-login': typeof AdminLoginRoute
   '/blog': typeof BlogRoute
+  '/admin-dashboard/$postId': typeof AdminDashboardPostIdRoute
+  '/admin-dashboard/': typeof AdminDashboardIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -123,35 +140,45 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/Blog-post-page'
-    | '/admin-dashboard'
     | '/admin-login'
     | '/blog'
+    | '/admin-dashboard/$postId'
+    | '/admin-dashboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/Blog-post-page' | '/admin-dashboard' | '/admin-login' | '/blog'
+  to:
+    | '/'
+    | '/Blog-post-page'
+    | '/admin-login'
+    | '/blog'
+    | '/admin-dashboard/$postId'
+    | '/admin-dashboard'
   id:
     | '__root__'
     | '/'
     | '/Blog-post-page'
-    | '/admin-dashboard'
     | '/admin-login'
     | '/blog'
+    | '/admin-dashboard/$postId'
+    | '/admin-dashboard/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BlogPostPageRoute: typeof BlogPostPageRoute
-  AdminDashboardRoute: typeof AdminDashboardRoute
   AdminLoginRoute: typeof AdminLoginRoute
   BlogRoute: typeof BlogRoute
+  AdminDashboardPostIdRoute: typeof AdminDashboardPostIdRoute
+  AdminDashboardIndexRoute: typeof AdminDashboardIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BlogPostPageRoute: BlogPostPageRoute,
-  AdminDashboardRoute: AdminDashboardRoute,
   AdminLoginRoute: AdminLoginRoute,
   BlogRoute: BlogRoute,
+  AdminDashboardPostIdRoute: AdminDashboardPostIdRoute,
+  AdminDashboardIndexRoute: AdminDashboardIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -166,9 +193,10 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/Blog-post-page",
-        "/admin-dashboard",
         "/admin-login",
-        "/blog"
+        "/blog",
+        "/admin-dashboard/$postId",
+        "/admin-dashboard/"
       ]
     },
     "/": {
@@ -177,14 +205,17 @@ export const routeTree = rootRoute
     "/Blog-post-page": {
       "filePath": "Blog-post-page.tsx"
     },
-    "/admin-dashboard": {
-      "filePath": "admin-dashboard.tsx"
-    },
     "/admin-login": {
       "filePath": "admin-login.tsx"
     },
     "/blog": {
       "filePath": "blog.tsx"
+    },
+    "/admin-dashboard/$postId": {
+      "filePath": "admin-dashboard/$postId.tsx"
+    },
+    "/admin-dashboard/": {
+      "filePath": "admin-dashboard/index.tsx"
     }
   }
 }
