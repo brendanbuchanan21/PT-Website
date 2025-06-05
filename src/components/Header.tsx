@@ -119,13 +119,6 @@ export default function Header() {
           >
             Sign In
           </Link>
-          <Link
-            to="/signup"
-            className="block text-sm text-white text-center underline hover:text-[#FBC02D] transition"
-            onClick={() => setIsOpen(false)}
-          >
-            Create Account
-          </Link>
         </div>
       </div>
     </header>
