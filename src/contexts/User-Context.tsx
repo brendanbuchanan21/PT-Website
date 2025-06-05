@@ -16,7 +16,7 @@ export function UserProvider({ children }: {children: ReactNode}) {
         const unsuscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser)
         })
-        return unsuscribe;
+        return () => unsuscribe();
     }, [])
 
 

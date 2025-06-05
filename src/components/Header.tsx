@@ -5,7 +5,7 @@ import { FaUserCircle } from 'react-icons/fa'
 import { useUser } from '@/contexts/User-Context'
 import { signOut } from 'firebase/auth'
 import { auth } from '@/firebase'
-import { Navigate } from '@tanstack/react-router'
+
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
@@ -14,13 +14,16 @@ export default function Header() {
   const navigate = useNavigate();
   const user = useUser();
   //access the useUser hook and use the user 
+  console.log(user, '🐱');
 
   const handleSignOut = async () => {
-    
-    await signOut(auth);
-    navigate({to: '/admin-login'});
+    try {
+      await signOut(auth);
+      navigate({to: '/admin-login'});
+    } catch (error) {
+      console.error(error);
+    }
   }
-
   return (
     <header className="sticky top-0 z-50 bg-[#581845] text-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -90,7 +93,7 @@ export default function Header() {
                   to="/admin-login"
                   className="block px-4 py-2 hover:bg-[#F5F5F5] text-sm"
                   onClick={() => {
-                    handleSignOut
+                    handleSignOut();
                     setAccountOpen(false)
                   }}
                 >
@@ -147,13 +150,20 @@ export default function Header() {
             Book an Appointment
           </Link>
           {/* 👇 Account Links */}
-          <Link
+          {user && (
+             <Link
             to="/signin"
             className="block text-sm text-white text-center underline hover:text-[#FBC02D] transition"
-            onClick={() => setIsOpen(false)}
+            onClick={() => {
+              handleSignOut();
+              setIsOpen(false)
+            
+            }}
           >
-            Sign In
+            Sign Out
           </Link>
+          )}
+         
         </div>
       </div>
     </header>
