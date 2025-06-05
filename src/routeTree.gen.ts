@@ -11,19 +11,13 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as BlogPostPageImport } from './routes/blog-post-page'
 import { Route as BlogImport } from './routes/blog'
 import { Route as AdminLoginImport } from './routes/admin-login'
 import { Route as AdminDashboardImport } from './routes/admin-dashboard'
+import { Route as BlogPostPageImport } from './routes/Blog-post-page'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
-
-const BlogPostPageRoute = BlogPostPageImport.update({
-  id: '/blog-post-page',
-  path: '/blog-post-page',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const BlogRoute = BlogImport.update({
   id: '/blog',
@@ -43,6 +37,12 @@ const AdminDashboardRoute = AdminDashboardImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const BlogPostPageRoute = BlogPostPageImport.update({
+  id: '/Blog-post-page',
+  path: '/Blog-post-page',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
@@ -58,6 +58,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/Blog-post-page': {
+      id: '/Blog-post-page'
+      path: '/Blog-post-page'
+      fullPath: '/Blog-post-page'
+      preLoaderRoute: typeof BlogPostPageImport
       parentRoute: typeof rootRoute
     }
     '/admin-dashboard': {
@@ -81,13 +88,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogImport
       parentRoute: typeof rootRoute
     }
-    '/blog-post-page': {
-      id: '/blog-post-page'
-      path: '/blog-post-page'
-      fullPath: '/blog-post-page'
-      preLoaderRoute: typeof BlogPostPageImport
-      parentRoute: typeof rootRoute
-    }
   }
 }
 
@@ -95,63 +95,63 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/Blog-post-page': typeof BlogPostPageRoute
   '/admin-dashboard': typeof AdminDashboardRoute
   '/admin-login': typeof AdminLoginRoute
   '/blog': typeof BlogRoute
-  '/blog-post-page': typeof BlogPostPageRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/Blog-post-page': typeof BlogPostPageRoute
   '/admin-dashboard': typeof AdminDashboardRoute
   '/admin-login': typeof AdminLoginRoute
   '/blog': typeof BlogRoute
-  '/blog-post-page': typeof BlogPostPageRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/Blog-post-page': typeof BlogPostPageRoute
   '/admin-dashboard': typeof AdminDashboardRoute
   '/admin-login': typeof AdminLoginRoute
   '/blog': typeof BlogRoute
-  '/blog-post-page': typeof BlogPostPageRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/Blog-post-page'
     | '/admin-dashboard'
     | '/admin-login'
     | '/blog'
-    | '/blog-post-page'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin-dashboard' | '/admin-login' | '/blog' | '/blog-post-page'
+  to: '/' | '/Blog-post-page' | '/admin-dashboard' | '/admin-login' | '/blog'
   id:
     | '__root__'
     | '/'
+    | '/Blog-post-page'
     | '/admin-dashboard'
     | '/admin-login'
     | '/blog'
-    | '/blog-post-page'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BlogPostPageRoute: typeof BlogPostPageRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminLoginRoute: typeof AdminLoginRoute
   BlogRoute: typeof BlogRoute
-  BlogPostPageRoute: typeof BlogPostPageRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BlogPostPageRoute: BlogPostPageRoute,
   AdminDashboardRoute: AdminDashboardRoute,
   AdminLoginRoute: AdminLoginRoute,
   BlogRoute: BlogRoute,
-  BlogPostPageRoute: BlogPostPageRoute,
 }
 
 export const routeTree = rootRoute
@@ -165,14 +165,17 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/Blog-post-page",
         "/admin-dashboard",
         "/admin-login",
-        "/blog",
-        "/blog-post-page"
+        "/blog"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/Blog-post-page": {
+      "filePath": "Blog-post-page.tsx"
     },
     "/admin-dashboard": {
       "filePath": "admin-dashboard.tsx"
@@ -182,9 +185,6 @@ export const routeTree = rootRoute
     },
     "/blog": {
       "filePath": "blog.tsx"
-    },
-    "/blog-post-page": {
-      "filePath": "blog-post-page.tsx"
     }
   }
 }

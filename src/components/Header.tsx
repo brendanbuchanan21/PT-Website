@@ -1,11 +1,25 @@
 import { useState } from 'react'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import clsx from 'clsx'
 import { FaUserCircle } from 'react-icons/fa'
+import { useUser } from '@/contexts/User-Context'
+import { signOut } from 'firebase/auth'
+import { auth } from '@/firebase'
+import { Navigate } from '@tanstack/react-router'
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
+
+  const navigate = useNavigate();
+  const user = useUser();
+  //access the useUser hook and use the user 
+
+  const handleSignOut = async () => {
+    
+    await signOut(auth);
+    navigate({to: '/admin-login'});
+  }
 
   return (
     <header className="sticky top-0 z-50 bg-[#581845] text-white shadow-md">
@@ -34,36 +48,57 @@ export default function Header() {
             Book an Appointment
           </Link>
 
-          {/* Account Icon */}
-          <div className="relative">
+
+          {user !== null && (
+            <>
+            <div className="relative">
             <button
               onClick={() => setAccountOpen(!accountOpen)}
-              className="text-white text-2xl hover:text-[#FBC02D] transition"
+              className="text-white text-2xl hover:text-[#FBC02D] transition cursor-pointer"
               aria-label="Account Menu"
             >
               <FaUserCircle />
             </button>
+            </div>
+            </>
+          )}
+          {/* Account Icon */}
+          
 
-            {/* Dropdown Menu */}
+           {/* Dropdown Menu */}
             {accountOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white text-[#581845] shadow-lg rounded-md overflow-hidden z-50">
+              <div className="absolute right-0 mt-20 w-48 bg-white text-[#581845] shadow-lg rounded-md overflow-hidden z-50">
+                {/* X Button */}
+                <div className="flex justify-end p-2">
+                  <button
+                    className="text-[#581845] hover:text-[#FBC02D] text-lg font-bold cursor-pointer"
+                    aria-label="Close Menu"
+                    onClick={() => setAccountOpen(false)}
+                  >
+                    ✕
+                  </button>
+                </div>
+
                 <Link
-                  to="/signin"
+                  to="/admin-dashboard"
                   className="block px-4 py-2 hover:bg-[#F5F5F5] text-sm"
                   onClick={() => setAccountOpen(false)}
                 >
-                  Sign In
+                  Admin Dashboard
                 </Link>
                 <Link
-                  to="/signup"
+                  to="/admin-login"
                   className="block px-4 py-2 hover:bg-[#F5F5F5] text-sm"
-                  onClick={() => setAccountOpen(false)}
+                  onClick={() => {
+                    handleSignOut
+                    setAccountOpen(false)
+                  }}
                 >
-                  Create Account
+                  Sign Out
                 </Link>
               </div>
             )}
-          </div>
+          
         </div>
 
         {/* Hamburger Button */}
