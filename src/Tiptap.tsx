@@ -1,29 +1,64 @@
-import { useEditor, EditorContent, BubbleMenu, FloatingMenu } from '@tiptap/react'
+import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import { useEffect } from 'react'
 
-const Tiptap = () => {
+export default function Tiptap({
+  content,
+  onChange,
+  editable,
+}: {
+  content: string
+  onChange: (html: string) => void
+  editable: boolean
+}) {
   const editor = useEditor({
     extensions: [StarterKit],
-    content: '<p>Hello World!</p>',
+    content,
+    editable,
+    onUpdate: ({ editor }) => {
+      onChange(editor.getHTML())
+    },
   })
+
+  useEffect(() => {
+    if (editor) {
+      editor.setEditable(editable)
+    }
+  }, [editable, editor])
+
+  useEffect(() => {
+    if (editor && editor.getHTML() !== content) {
+      editor.commands.setContent(content)
+    }
+  }, [content, editor])
 
   if (!editor) return null
 
   return (
-    <div>
-      <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-        <button onClick={() => editor.chain().focus().toggleBold().run()}>Bold</button>
-        <button onClick={() => editor.chain().focus().toggleItalic().run()}>Italic</button>
-      </BubbleMenu>
+    <div className="border border-gray-300 rounded-md overflow-hidden">
+      {/* Toolbar */}
+      {editable && (
+        <div className="flex flex-wrap gap-2 p-2 border-b bg-gray-50">
+          <button onClick={() => editor.chain().focus().toggleBold().run()} className={editor.isActive('bold') ? 'font-bold text-purple-700' : ''}>
+            Bold
+          </button>
+          <button onClick={() => editor.chain().focus().toggleItalic().run()} className={editor.isActive('italic') ? 'italic text-purple-700' : ''}>
+            Italic
+          </button>
+          <button onClick={() => editor.chain().focus().toggleBulletList().run()} className={editor.isActive('bulletList') ? 'text-purple-700' : ''}>
+            • List
+          </button>
+          <button onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} className={editor.isActive('heading', { level: 2 }) ? 'text-purple-700' : ''}>
+            H2
+          </button>
+          <button onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} className={editor.isActive('heading', { level: 3 }) ? 'text-purple-700' : ''}>
+            H3
+          </button>
+        </div>
+      )}
 
-      <FloatingMenu editor={editor}>
-        <button onClick={() => editor.chain().focus().setParagraph().run()}>Paragraph</button>
-        <button onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}>H1</button>
-      </FloatingMenu>
-
-      <EditorContent editor={editor} />
+      {/* Editor */}
+      <EditorContent editor={editor} className="prose max-w-none p-4" />
     </div>
   )
 }
-
-export default Tiptap;
