@@ -7,27 +7,23 @@ import { signOut } from 'firebase/auth'
 import { auth } from '@/firebase'
 import { useEditMode } from '@/contexts/Edit-mode-context'
 
-
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
 
-  const navigate = useNavigate();
-  const user = useUser();
-  // import edit mode context 
-  const { editMode, toggleEditMode } = useEditMode();
-
-  //access the useUser hook and use the user 
-  console.log(user, '🐱');
+  const navigate = useNavigate()
+  const user = useUser()
+  const { editMode, toggleEditMode } = useEditMode()
 
   const handleSignOut = async () => {
     try {
-      await signOut(auth);
-      navigate({to: '/admin-login'});
+      await signOut(auth)
+      navigate({ to: '/admin-login' })
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
   }
+
   return (
     <header className="sticky top-0 z-50 bg-[#581845] text-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -38,90 +34,73 @@ export default function Header() {
 
         {/* Desktop Nav */}
         <nav className="hidden lg:flex gap-6 text-sm font-medium">
-          <Link to="/" className="hover:text-[#FBC02D] transition">Home</Link>
-          <Link to="/about" className="hover:text-[#FBC02D] transition">About Us</Link>
-          <Link to="/services" className="hover:text-[#FBC02D] transition">Services</Link>
-          <Link to="/testimonials" className="hover:text-[#FBC02D] transition">Testimonials</Link>
-          <Link to="/blog" className="hover:text-[#FBC02D] transition">Blog</Link>
-          <Link to="/contact" className="hover:text-[#FBC02D] transition">Contact</Link>
+          <Link to="/" className="hover:text-[#FBC02D] transition">
+            Home
+          </Link>
+          <Link to="/about" className="hover:text-[#FBC02D] transition">
+            About Us
+          </Link>
+          <Link to="/services" className="hover:text-[#FBC02D] transition">
+            Services
+          </Link>
+          <Link to="/testimonials" className="hover:text-[#FBC02D] transition">
+            Testimonials
+          </Link>
+          <Link to="/blog" className="hover:text-[#FBC02D] transition">
+            Blog
+          </Link>
+          <Link to="/contact" className="hover:text-[#FBC02D] transition">
+            Contact
+          </Link>
         </nav>
 
+        {/* Desktop Right Actions */}
         <div className="hidden lg:flex items-center gap-4">
-          {/* CTA */}
-          <Link
-            to="/book"
-            className="bg-[#FBC02D] text-[#581845] px-4 py-2 rounded-md font-semibold hover:bg-yellow-400 transition"
-          >
-            Book an Appointment
-          </Link>
-
-
           {user !== null && (
             <>
-            <div className="relative">
-            <button
-              onClick={() => setAccountOpen(!accountOpen)}
-              className="text-white text-2xl hover:text-[#FBC02D] transition cursor-pointer"
-              aria-label="Account Menu"
-            >
-              <FaUserCircle />
-            </button>
-            </div>
+              {/* Edit Mode Button on desktop */}
+              <button
+                onClick={toggleEditMode}
+                className={clsx(
+                  'px-4 py-2 rounded-md text-sm font-semibold transition',
+                  editMode
+                    ? 'bg-red-500 text-white hover:bg-red-600'
+                    : 'bg-gray-200 text-[#581845] hover:bg-gray-300'
+                )}
+              >
+                {editMode ? 'Exit Edit' : 'Edit Mode'}
+              </button>
+
+              {/* Account Icon */}
+              <div className="relative">
+                <button
+                  onClick={() => setAccountOpen(!accountOpen)}
+                  className="text-white text-2xl hover:text-[#FBC02D] transition cursor-pointer"
+                  aria-label="Account Menu"
+                >
+                  <FaUserCircle />
+                </button>
+              </div>
             </>
           )}
-          {/* Account Icon */}
-          
-
-           {/* Dropdown Menu */}
-            {accountOpen && (
-              <div className="absolute right-0 mt-20 w-48 bg-white text-[#581845] shadow-lg rounded-md overflow-hidden z-50">
-                {/* X Button */}
-                <div className="flex justify-end p-2">
-                  <button
-                    className="text-[#581845] hover:text-[#FBC02D] text-lg font-bold cursor-pointer"
-                    aria-label="Close Menu"
-                    onClick={() => setAccountOpen(false)}
-                  >
-                    ✕
-                  </button>
-                </div>
-
-                <Link
-                  to="/admin-dashboard"
-                  className="block px-4 py-2 hover:bg-[#F5F5F5] text-sm"
-                  onClick={() => setAccountOpen(false)}
-                >
-                  Admin Dashboard
-                </Link>
-                <Link
-                  to="/admin-login"
-                  className="block px-4 py-2 hover:bg-[#F5F5F5] text-sm"
-                  onClick={() => {
-                    handleSignOut();
-                    setAccountOpen(false)
-                  }}
-                >
-                  Sign Out
-                </Link>
-              </div>
-            )}
-          
         </div>
 
-       {/* MOBILE ACTIONS: Edit Mode Button & Hamburger Button */}
-        <div className="lg:hidden flex items-center gap-2"> {/* THIS IS THE NEW WRAPPER */}
-          {/* Edit Mode Button (only visible for mobile/tablet) */}
+        {/* MOBILE ACTIONS: Edit Mode Button & Hamburger Button */}
+        <div className="lg:hidden flex items-center gap-2">
+          {/* Edit Mode Button (only visible on mobile/tablet) */}
           <button
             onClick={toggleEditMode}
             className={clsx(
-              "px-3 py-1 rounded text-sm font-semibold transition cursor-pointer",
-              editMode ? "bg-red-500 text-white" : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+              'px-3 py-1 rounded text-sm font-semibold transition cursor-pointer',
+              editMode
+                ? 'bg-red-500 text-white'
+                : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
             )}
           >
             {editMode ? 'Exit Edit' : 'Edit Mode'}
           </button>
 
-          {/* Hamburger Button (only visible for mobile/tablet) */}
+          {/* Hamburger Button (only visible on mobile/tablet) */}
           <button
             onClick={() => setIsOpen(true)}
             className="text-white text-2xl cursor-pointer"
@@ -135,8 +114,8 @@ export default function Header() {
       {/* Mobile Slide-in Menu */}
       <div
         className={clsx(
-          "fixed top-0 right-0 w-72 h-full bg-[#581845] text-white z-50 p-6 transition-transform duration-300 ease-in-out",
-          isOpen ? "translate-x-0" : "translate-x-full"
+          'fixed top-0 right-0 w-72 h-full bg-[#581845] text-white z-50 p-6 transition-transform duration-300 ease-in-out',
+          isOpen ? 'translate-x-0' : 'translate-x-full'
         )}
       >
         {/* Close Button */}
@@ -149,52 +128,90 @@ export default function Header() {
 
         {/* Mobile Nav Links */}
         <nav className="flex flex-col space-y-4 mt-12 text-base">
-          <Link onClick={() => setIsOpen(false)} to="/" className="hover:text-[#FBC02D]">Home</Link>
-          <Link onClick={() => setIsOpen(false)} to="/about" className="hover:text-[#FBC02D]">About Us</Link>
-          <Link onClick={() => setIsOpen(false)} to="/services" className="hover:text-[#FBC02D]">Services</Link>
-          <Link onClick={() => setIsOpen(false)} to="/conditions" className="hover:text-[#FBC02D]">Conditions Treated</Link>
-          <Link onClick={() => setIsOpen(false)} to="/testimonials" className="hover:text-[#FBC02D]">Testimonials</Link>
-          <Link onClick={() => setIsOpen(false)} to="/blog" className="hover:text-[#FBC02D]">Blog</Link>
-          <Link onClick={() => setIsOpen(false)} to="/contact" className="hover:text-[#FBC02D]">Contact</Link>
+          <Link onClick={() => setIsOpen(false)} to="/" className="hover:text-[#FBC02D]">
+            Home
+          </Link>
+          <Link onClick={() => setIsOpen(false)} to="/about" className="hover:text-[#FBC02D]">
+            About Us
+          </Link>
+          <Link onClick={() => setIsOpen(false)} to="/services" className="hover:text-[#FBC02D]">
+            Services
+          </Link>
+          <Link onClick={() => setIsOpen(false)} to="/conditions" className="hover:text-[#FBC02D]">
+            Conditions Treated
+          </Link>
+          <Link onClick={() => setIsOpen(false)} to="/testimonials" className="hover:text-[#FBC02D]">
+            Testimonials
+          </Link>
+          <Link onClick={() => setIsOpen(false)} to="/blog" className="hover:text-[#FBC02D]">
+            Blog
+          </Link>
+          <Link onClick={() => setIsOpen(false)} to="/contact" className="hover:text-[#FBC02D]">
+            Contact
+          </Link>
         </nav>
 
-        {/* CTA */}
-        <div className="mt-8 space-y-4">
-          <Link
-            to="/book"
-            className="block bg-[#FBC02D] text-[#581845] text-center py-2 rounded-md font-semibold hover:bg-yellow-400 transition"
-            onClick={() => setIsOpen(false)}
-          >
-            Book an Appointment
-          </Link>
-          {/* 👇 Account Links */}
-          {user && (
-            <>
-            <Link 
-            to="/admin-dashboard"
-            className='block text-sm text-white text-center underline hover:text-[#FBC02D] transition'
-            onClick={() => {
-              navigate({to: "/admin-dashboard"});
-              setIsOpen(false);
-            }}
-            >Admin Dashboard</Link>
+        {/* Account Links (only if user logged in) */}
+        {user && (
+          <div className="mt-8 space-y-4">
+            <Link
+              to="/admin-dashboard"
+              className="block text-sm text-white text-center underline hover:text-[#FBC02D] transition"
+              onClick={() => {
+                navigate({ to: '/admin-dashboard' })
+                setIsOpen(false)
+              }}
+            >
+              Admin Dashboard
+            </Link>
 
-             <Link
+            <Link
+              to="/admin-login"
+              className="block text-sm text-white text-center underline hover:text-[#FBC02D] transition"
+              onClick={() => {
+                handleSignOut()
+                setIsOpen(false)
+              }}
+            >
+              Sign Out
+            </Link>
+          </div>
+        )}
+      </div>
+
+      {/* Account Dropdown Menu */}
+      {accountOpen && (
+        <div className="absolute right-0 top-16 w-48 bg-white text-[#581845] shadow-lg rounded-md overflow-hidden z-50">
+          {/* Close Button */}
+          <div className="flex justify-end p-2">
+            <button
+              className="text-[#581845] hover:text-[#FBC02D] text-lg font-bold cursor-pointer"
+              aria-label="Close Menu"
+              onClick={() => setAccountOpen(false)}
+            >
+              ✕
+            </button>
+          </div>
+
+          <Link
+            to="/admin-dashboard"
+            className="block px-4 py-2 hover:bg-[#F5F5F5] text-sm"
+            onClick={() => setAccountOpen(false)}
+          >
+            Admin Dashboard
+          </Link>
+          <Link
             to="/admin-login"
-            className="block text-sm text-white text-center underline hover:text-[#FBC02D] transition"
+            className="block px-4 py-2 hover:bg-[#F5F5F5] text-sm"
             onClick={() => {
-              handleSignOut();
-              setIsOpen(false)
-            
+              handleSignOut()
+              setAccountOpen(false)
             }}
           >
             Sign Out
           </Link>
-          </>
-          )}
-         
         </div>
-      </div>
+      )}
     </header>
   )
 }
