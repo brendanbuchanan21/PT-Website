@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import './styles.css'
 import { UserProvider } from './contexts/User-Context.tsx'
+import { EditModeProvider } from './contexts/Edit-mode-context.tsx'
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
@@ -34,7 +35,9 @@ if (rootElement && !rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <UserProvider>
+      <EditModeProvider>
       <RouterProvider router={router} />
+      </EditModeProvider>
       </UserProvider>
     </StrictMode>,
   )

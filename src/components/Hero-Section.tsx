@@ -1,5 +1,5 @@
 import jhanati from '../images/jhanati.jpg'
-
+import Tiptap from '@/Tiptap'
 
 export default function HeroSection() {
     
@@ -10,7 +10,9 @@ export default function HeroSection() {
         {/* Left: Text Content */}
         <div className="max-w-xl text-center lg:text-left">
           <h1 className="text-4xl lg:text-5xl font-bold text-[#581845] leading-tight">
-            Empower. Restore. Thrive.
+            <Tiptap />
+            {/*Empower. Restore. Thrive.
+            */}
           </h1>
           <p className="mt-4 text-lg text-[#424242]">
             At Revive OrthoNeuro, we specialize in helping you regain strength, movement, and confidence.
