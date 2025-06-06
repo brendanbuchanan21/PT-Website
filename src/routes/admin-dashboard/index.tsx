@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useContext, useEffect, useState } from 'react'
 import { useUser } from '@/contexts/User-Context'
 
+
 const mockPosts = [
   {
     id: 1,
@@ -23,7 +24,7 @@ export const Route = createFileRoute('/admin-dashboard/')({
 
 function RouteComponent() {
   const [posts, setPosts] = useState(mockPosts)
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const user = useUser()
 
   useEffect(() => {
@@ -47,7 +48,11 @@ function RouteComponent() {
         {/* Action Bar */}
         <div className="flex justify-between items-center mb-6">
           <p className="text-md text-[#757575]">Manage blog posts and content</p>
-          <button className="bg-[#FBC02D] text-[#581845] px-4 py-2 rounded-md font-semibold hover:bg-yellow-400 transition cursor-pointer">
+          <button className="bg-[#FBC02D] text-[#581845] px-4 py-2 rounded-md font-semibold hover:bg-yellow-400 transition cursor-pointer"
+            onClick={() => {
+              navigate({to: "/admin-dashboard/new"})
+            }}
+          >
             + New Post
           </button>
         </div>

@@ -16,6 +16,7 @@ import { Route as AdminLoginImport } from './routes/admin-login'
 import { Route as BlogPostPageImport } from './routes/Blog-post-page'
 import { Route as IndexImport } from './routes/index'
 import { Route as AdminDashboardIndexImport } from './routes/admin-dashboard/index'
+import { Route as AdminDashboardNewImport } from './routes/admin-dashboard/new'
 import { Route as AdminDashboardPostIdImport } from './routes/admin-dashboard/$postId'
 
 // Create/Update Routes
@@ -47,6 +48,12 @@ const IndexRoute = IndexImport.update({
 const AdminDashboardIndexRoute = AdminDashboardIndexImport.update({
   id: '/admin-dashboard/',
   path: '/admin-dashboard/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminDashboardNewRoute = AdminDashboardNewImport.update({
+  id: '/admin-dashboard/new',
+  path: '/admin-dashboard/new',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -95,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDashboardPostIdImport
       parentRoute: typeof rootRoute
     }
+    '/admin-dashboard/new': {
+      id: '/admin-dashboard/new'
+      path: '/admin-dashboard/new'
+      fullPath: '/admin-dashboard/new'
+      preLoaderRoute: typeof AdminDashboardNewImport
+      parentRoute: typeof rootRoute
+    }
     '/admin-dashboard/': {
       id: '/admin-dashboard/'
       path: '/admin-dashboard'
@@ -113,6 +127,7 @@ export interface FileRoutesByFullPath {
   '/admin-login': typeof AdminLoginRoute
   '/blog': typeof BlogRoute
   '/admin-dashboard/$postId': typeof AdminDashboardPostIdRoute
+  '/admin-dashboard/new': typeof AdminDashboardNewRoute
   '/admin-dashboard': typeof AdminDashboardIndexRoute
 }
 
@@ -122,6 +137,7 @@ export interface FileRoutesByTo {
   '/admin-login': typeof AdminLoginRoute
   '/blog': typeof BlogRoute
   '/admin-dashboard/$postId': typeof AdminDashboardPostIdRoute
+  '/admin-dashboard/new': typeof AdminDashboardNewRoute
   '/admin-dashboard': typeof AdminDashboardIndexRoute
 }
 
@@ -132,6 +148,7 @@ export interface FileRoutesById {
   '/admin-login': typeof AdminLoginRoute
   '/blog': typeof BlogRoute
   '/admin-dashboard/$postId': typeof AdminDashboardPostIdRoute
+  '/admin-dashboard/new': typeof AdminDashboardNewRoute
   '/admin-dashboard/': typeof AdminDashboardIndexRoute
 }
 
@@ -143,6 +160,7 @@ export interface FileRouteTypes {
     | '/admin-login'
     | '/blog'
     | '/admin-dashboard/$postId'
+    | '/admin-dashboard/new'
     | '/admin-dashboard'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -151,6 +169,7 @@ export interface FileRouteTypes {
     | '/admin-login'
     | '/blog'
     | '/admin-dashboard/$postId'
+    | '/admin-dashboard/new'
     | '/admin-dashboard'
   id:
     | '__root__'
@@ -159,6 +178,7 @@ export interface FileRouteTypes {
     | '/admin-login'
     | '/blog'
     | '/admin-dashboard/$postId'
+    | '/admin-dashboard/new'
     | '/admin-dashboard/'
   fileRoutesById: FileRoutesById
 }
@@ -169,6 +189,7 @@ export interface RootRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   BlogRoute: typeof BlogRoute
   AdminDashboardPostIdRoute: typeof AdminDashboardPostIdRoute
+  AdminDashboardNewRoute: typeof AdminDashboardNewRoute
   AdminDashboardIndexRoute: typeof AdminDashboardIndexRoute
 }
 
@@ -178,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   BlogRoute: BlogRoute,
   AdminDashboardPostIdRoute: AdminDashboardPostIdRoute,
+  AdminDashboardNewRoute: AdminDashboardNewRoute,
   AdminDashboardIndexRoute: AdminDashboardIndexRoute,
 }
 
@@ -196,6 +218,7 @@ export const routeTree = rootRoute
         "/admin-login",
         "/blog",
         "/admin-dashboard/$postId",
+        "/admin-dashboard/new",
         "/admin-dashboard/"
       ]
     },
@@ -213,6 +236,9 @@ export const routeTree = rootRoute
     },
     "/admin-dashboard/$postId": {
       "filePath": "admin-dashboard/$postId.tsx"
+    },
+    "/admin-dashboard/new": {
+      "filePath": "admin-dashboard/new.tsx"
     },
     "/admin-dashboard/": {
       "filePath": "admin-dashboard/index.tsx"
