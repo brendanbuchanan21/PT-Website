@@ -5,6 +5,7 @@ import { FaUserCircle } from 'react-icons/fa'
 import { useUser } from '@/contexts/User-Context'
 import { signOut } from 'firebase/auth'
 import { auth } from '@/firebase'
+import { useEditMode } from '@/contexts/Edit-mode-context'
 
 
 export default function Header() {
@@ -13,6 +14,9 @@ export default function Header() {
 
   const navigate = useNavigate();
   const user = useUser();
+  // import edit mode context 
+  const { editMode, toggleEditMode } = useEditMode();
+
   //access the useUser hook and use the user 
   console.log(user, '🐱');
 
@@ -104,14 +108,28 @@ export default function Header() {
           
         </div>
 
-        {/* Hamburger Button */}
-        <button
-          onClick={() => setIsOpen(true)}
-          className="lg:hidden text-white text-2xl cursor-pointer"
-          aria-label="Open Menu"
-        >
-          ☰
-        </button>
+       {/* MOBILE ACTIONS: Edit Mode Button & Hamburger Button */}
+        <div className="lg:hidden flex items-center gap-2"> {/* THIS IS THE NEW WRAPPER */}
+          {/* Edit Mode Button (only visible for mobile/tablet) */}
+          <button
+            onClick={toggleEditMode}
+            className={clsx(
+              "px-3 py-1 rounded text-sm font-semibold transition cursor-pointer",
+              editMode ? "bg-red-500 text-white" : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+            )}
+          >
+            {editMode ? 'Exit Edit' : 'Edit Mode'}
+          </button>
+
+          {/* Hamburger Button (only visible for mobile/tablet) */}
+          <button
+            onClick={() => setIsOpen(true)}
+            className="text-white text-2xl cursor-pointer"
+            aria-label="Open Menu"
+          >
+            ☰
+          </button>
+        </div>
       </div>
 
       {/* Mobile Slide-in Menu */}
