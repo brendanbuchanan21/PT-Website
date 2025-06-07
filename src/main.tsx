@@ -4,6 +4,8 @@ import { RouterProvider, createRouter } from '@tanstack/react-router'
 import './styles.css'
 import { UserProvider } from './contexts/User-Context.tsx'
 import { EditModeProvider } from './contexts/Edit-mode-context.tsx'
+import ReactQueryProvider from './components/React-devtools-wrapper.tsx'
+
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
@@ -32,13 +34,16 @@ declare module '@tanstack/react-router' {
 const rootElement = document.getElementById('app')
 if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
+
   root.render(
     <StrictMode>
+      <ReactQueryProvider>
       <UserProvider>
       <EditModeProvider>
       <RouterProvider router={router} />
       </EditModeProvider>
       </UserProvider>
+      </ReactQueryProvider>
     </StrictMode>,
   )
 }

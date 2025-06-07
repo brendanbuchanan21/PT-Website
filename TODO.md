@@ -1,5 +1,7 @@
 
 
-// todo 
-// figure out in text editor today
-// add toast notifications 
+# todo 
+ 
+* add toast notifications 
+* build api for the text in the hero section
+

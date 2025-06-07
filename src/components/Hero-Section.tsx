@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import jhanati from '../images/jhanati.jpg'
-import Tiptap from '@/Tiptap'
 import { useEditMode } from '@/contexts/Edit-mode-context'
 
 export default function HeroSection() {
@@ -20,6 +19,8 @@ export default function HeroSection() {
     setSubtext1(draft1)
     setSubtext2(draft2)
   }
+
+  // handle function sending the admin input to the backend
 
   return (
     <div className="bg-[#FFF8F1] min-h-[70vh] w-full px-4 pt-24">
