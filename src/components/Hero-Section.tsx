@@ -1,23 +1,63 @@
 import { useState } from 'react'
 import jhanati from '../images/jhanati.jpg'
 import { useEditMode } from '@/contexts/Edit-mode-context'
+import { useMutation } from '@tanstack/react-query'
+import axios from 'axios'
+import { getAuth } from 'firebase/auth'
+
 
 export default function HeroSection() {
   const { editMode } = useEditMode()
 
   // State to manage live text and drafts
   const [heading, setHeading] = useState('Empower. Restore. Thrive.')
-  const [subtext1, setSubtext1] = useState('At Revive OrthoNeuro, we specialize in helping you regain strength, movement, and confidence.')
-  const [subtext2, setSubtext2] = useState('Experience personalized physical therapy designed to heal, empower, and revitalize your life.')
+  const [subText1, setSubtext1] = useState('At Revive OrthoNeuro, we specialize in helping you regain strength, movement, and confidence.')
+  const [subText2, setSubtext2] = useState('Experience personalized physical therapy designed to heal, empower, and revitalize your life.')
 
   const [draftHeading, setDraftHeading] = useState(heading)
-  const [draft1, setDraft1] = useState(subtext1)
-  const [draft2, setDraft2] = useState(subtext2)
+  const [draft1, setDraft1] = useState(subText1)
+  const [draft2, setDraft2] = useState(subText2)
+
+ 
+  // create use query to capture and mutate the heading texts
+  const mutation = useMutation({
+    mutationFn: async (newHeadingTexts: {
+      heading: string
+      subText1: string
+      subText2: string
+    }) => {
+       // capture the user 
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (!user) throw new Error("user not authenticated");
+      const token = await user.getIdToken();
+      console.log('here is the user token', token);
+
+      return axios.patch('http://localhost:8080/api/hero-section', newHeadingTexts, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      })
+    },
+    onSuccess: () => {
+      setHeading(draftHeading)
+      setSubtext1(draft1)
+      setSubtext2(draft2)
+      console.log('hello world');
+    },
+    onError: (error) => {
+      console.error('Failed to update hero section:', error)
+      console.log('request did not process');
+    }
+  })
 
   const handleSave = () => {
-    setHeading(draftHeading)
-    setSubtext1(draft1)
-    setSubtext2(draft2)
+   mutation.mutate({
+    heading: draftHeading,
+    subText1: draft1,
+    subText2: draft2
+   })
   }
 
   // handle function sending the admin input to the backend
@@ -48,7 +88,7 @@ export default function HeroSection() {
                 className="w-full px-2 py-1 border border-gray-300 rounded text-black"
               />
             ) : (
-              subtext1
+              subText1
             )}
           </p>
 
@@ -60,7 +100,7 @@ export default function HeroSection() {
                 className="w-full px-2 py-1 border border-gray-300 rounded text-black"
               />
             ) : (
-              subtext2
+              subText2
             )}
           </p>
 
