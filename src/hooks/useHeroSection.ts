@@ -36,7 +36,7 @@ export function usePatchHeroSection() {
             if (!user) throw new Error("user does not exist");
             const token = await user.getIdToken();
             
-            return axios.patch("http://localhost:8080", newData, {
+            return axios.patch("http://localhost:8080/api/hero-section", newData, {
                 headers: { Authorization: `Bearer ${token}`},
                 withCredentials: true,
             });
@@ -44,8 +44,8 @@ export function usePatchHeroSection() {
             onSuccess: () => {
                 queryClient.invalidateQueries({ queryKey: ['heroSection']})
             },
-            onError: () => {
-                console.log("error patching the heading texts in the request");
+            onError: (error) => {
+                console.log("error patching the heading texts in the request", error);
             } ,
     })
     

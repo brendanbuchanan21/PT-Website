@@ -25,6 +25,9 @@ export default function HeroSection() {
       setHeading(data.heading);
       setSubtext1(data.subText1);
       setSubtext2(data.subText2);
+      setDraftHeading(data.heading);
+      setDraft1(data.subText1);
+      setDraft2(data.subText2);
     }
   }, [data])
 
@@ -44,7 +47,12 @@ export default function HeroSection() {
     <div className="bg-[#FFF8F1] min-h-[70vh] w-full px-4 pt-24">
       <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center lg:items-start justify-center gap-16 px-4">
         {/* Left: Text Content */}
-        <div className="max-w-xl text-center lg:text-left">
+        {isLoading ? (
+          <div className="min-h-[70vh] w-full px-4 pt-24 flex items-center justify-center">
+            <span className="text-[#581845]">Loading...</span>
+          </div>
+        ) : (
+          <div className="max-w-xl text-center lg:text-left">
           <h1 className="text-4xl lg:text-5xl font-bold text-[#581845] leading-tight">
             {editMode ? (
               <input
@@ -91,6 +99,8 @@ export default function HeroSection() {
             </button>
           )}
         </div>
+        )}
+        
 
         {/* Right: Responsive Image */}
         <div className="max-w-sm w-full mb-10">
