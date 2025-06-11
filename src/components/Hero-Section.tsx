@@ -1,18 +1,16 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import jhanati from '../images/jhanati.jpg'
 import { useEditMode } from '@/contexts/Edit-mode-context'
-import { useMutation } from '@tanstack/react-query'
-import axios from 'axios'
-import { getAuth } from 'firebase/auth'
+import { useHeroSection, usePatchHeroSection } from '@/hooks/useHeroSection'
 
 
 export default function HeroSection() {
   const { editMode } = useEditMode()
 
   // State to manage live text and drafts
-  const [heading, setHeading] = useState('Empower. Restore. Thrive.')
-  const [subText1, setSubtext1] = useState('At Revive OrthoNeuro, we specialize in helping you regain strength, movement, and confidence.')
-  const [subText2, setSubtext2] = useState('Experience personalized physical therapy designed to heal, empower, and revitalize your life.')
+  const [heading, setHeading] = useState('')
+  const [subText1, setSubtext1] = useState('')
+  const [subText2, setSubtext2] = useState('')
 
   const [draftHeading, setDraftHeading] = useState(heading)
   const [draft1, setDraft1] = useState(subText1)
@@ -20,40 +18,20 @@ export default function HeroSection() {
 
  
   // create use query to capture and mutate the heading texts
-  const mutation = useMutation({
-    mutationFn: async (newHeadingTexts: {
-      heading: string
-      subText1: string
-      subText2: string
-    }) => {
-       // capture the user 
-      const auth = getAuth();
-      const user = auth.currentUser;
-      if (!user) throw new Error("user not authenticated");
-      const token = await user.getIdToken();
-      console.log('here is the user token', token);
+  const { data, isLoading } = useHeroSection();
 
-      return axios.patch('http://localhost:8080/api/hero-section', newHeadingTexts, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        withCredentials: true,
-      })
-    },
-    onSuccess: () => {
-      setHeading(draftHeading)
-      setSubtext1(draft1)
-      setSubtext2(draft2)
-      console.log('hello world');
-    },
-    onError: (error) => {
-      console.error('Failed to update hero section:', error)
-      console.log('request did not process');
+  useEffect(() => {
+    if (data) {
+      setHeading(data.heading);
+      setSubtext1(data.subText1);
+      setSubtext2(data.subText2);
     }
-  })
+  }, [data])
 
+  const patchHero = usePatchHeroSection();
+ 
   const handleSave = () => {
-   mutation.mutate({
+   patchHero.mutate({
     heading: draftHeading,
     subText1: draft1,
     subText2: draft2
