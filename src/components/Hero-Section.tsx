@@ -6,8 +6,6 @@ import jhanati from '../images/jhanati.jpg'
 export default function HeroSection() {
  
 
-  // handle function sending the admin input to the backend
-
   return (
     <div className="bg-[#FFF8F1] min-h-[70vh] w-full px-4 pt-24">
       <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center lg:items-start justify-center gap-16 px-4">
