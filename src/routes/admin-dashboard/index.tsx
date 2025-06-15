@@ -1,8 +1,9 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useUser } from '@/contexts/User-Context'
+import { useGetBlogPosts } from '@/hooks/blog-hook'
 
-
+{/*
 const mockPosts = [
   {
     id: 1,
@@ -18,27 +19,49 @@ const mockPosts = [
   },
 ]
 
+*/}
+
+type blogData = {
+    id: number
+    title: string
+    author: string
+    date: string
+    file: File
+    description: string
+}
+
 export const Route = createFileRoute('/admin-dashboard/')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const [posts, setPosts] = useState(mockPosts)
+  const [posts, setPosts] = useState<blogData[]>([])
   const navigate = useNavigate();
   const user = useUser()
 
+  // this is for protecting the route from non admin user
   useEffect(() => {
     if (user === null) {
       navigate({ to: '/admin-login' })
     }
   }, [user, navigate])
 
+  // handle the fetching of blog posts
+  const { data, isLoading, error } = useGetBlogPosts();
+  useEffect(() => {
+    if (data) {
+      setPosts(data);
+    }
+  }, [data])
+
+  // this is to handle going to individual posts
   const handleNavigatePost = (id: number) => {
     navigate({
       to: '/admin-dashboard/$postId',
       params: { postId: String(id) },
     })
   }
+
 
   return (
     <div className="bg-[#FFF8F1] min-h-screen px-6 pt-24 pb-16 text-[#424242]">

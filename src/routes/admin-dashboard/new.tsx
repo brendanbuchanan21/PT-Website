@@ -1,24 +1,25 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
 import { useUser } from '@/contexts/User-Context'
-import { useEditMode } from '@/contexts/Edit-mode-context'
 import Tiptap from '@/Tiptap'
+import { usePostBlog } from '@/hooks/blog-hook'
 
 export const Route = createFileRoute('/admin-dashboard/new')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const navigate = useNavigate()
-  const user = useUser()
-  const { editMode } = useEditMode()
+  const navigate = useNavigate();
+  const user = useUser();
+
+  const postBlog = usePostBlog();
 
   const [title, setTitle] = useState('')
   const [date, setDate] = useState('')
   const [author, setAuthor] = useState('')
-  const [content, setContent] = useState('')
+  const [description, setDescription] = useState('')
+  const [file, setFile] = useState<File | null>(null)
 
-  const [image, setImage] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -31,7 +32,7 @@ function RouteComponent() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      setImage(file)
+      setFile(file)
       setPreviewUrl(URL.createObjectURL(file))
     }
   }
@@ -42,13 +43,29 @@ function RouteComponent() {
 
   const handleSave = () => {
     // send new post data to backend
-    console.log({ title, author, date, content, image })
-    alert('New post saved!')
+    console.log({ title, author, date, description, file })
+    if (!title || !date || !author || !description || !file) {
+      alert("Please select");
+      return;
+    }
+    postBlog.mutate({
+      title,
+      date,
+      author,
+      description,
+      file,
+    })
+
+    navigate({ to: "/admin-dashboard" });
+
+
   }
 
   const handlePublish = () => {
     alert('New post published!')
   }
+
+  
 
   return (
     <div className="bg-[#FFF8F1] min-h-screen px-4 pt-24 pb-16">
@@ -110,13 +127,13 @@ function RouteComponent() {
         </div>
 
         <div className="prose prose-lg max-w-none text-[#424242] mb-8">
-          <Tiptap content={content} onChange={setContent} editable={true} />
+          <Tiptap content={description} onChange={setDescription} editable={true} />
         </div>
 
         <div className="flex flex-wrap gap-4">
           <button
             onClick={handleSave}
-            className="bg-[#FBC02D] text-[#581845] font-semibold px-5 py-2 rounded-md hover:bg-yellow-400 transition"
+            className="bg-[#FBC02D] text-[#581845] font-semibold px-5 py-2 rounded-md hover:bg-yellow-400 transition cursor-pointer"
           >
             Save Draft
           </button>
