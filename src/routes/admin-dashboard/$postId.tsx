@@ -3,7 +3,8 @@ import { useEffect, useState, useRef } from 'react'
 import { useUser } from '@/contexts/User-Context'
 import { useEditMode } from '@/contexts/Edit-mode-context'
 import Tiptap from '@/Tiptap'
-import { getBlogPostById } from '@/hooks/blog-hook'
+import { getBlogPostById, changeBlogPost } from '@/hooks/blog-hook'
+
 
 type blogObject = {
     id: number
@@ -11,9 +12,13 @@ type blogObject = {
     author: string
     date: string
     imageUrl: string
-    file?: File
     description: string
+    isPublished?: boolean
 }
+
+// This adds `file` for when user uploads a new image
+type BlogContentState = blogObject & { file?: File }
+
 
 export const Route = createFileRoute('/admin-dashboard/$postId')({
   component: RouteComponent,
@@ -24,6 +29,11 @@ function RouteComponent() {
   const navigate = useNavigate();
   const user = useUser();
   const { editMode } = useEditMode();
+  const { 
+    mutate: patchBlog,
+    isError,
+    isPending,
+  } = changeBlogPost();
 
     useEffect(() => {
     if (!user) {
@@ -42,7 +52,7 @@ function RouteComponent() {
     }
   },[data]);
 
-  const [blogContent, setBlogContent] = useState<blogObject | null>(null);
+  const [blogContent, setBlogContent] = useState<BlogContentState | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -62,7 +72,21 @@ function RouteComponent() {
 
 
   const handlePublish = () => {
-    alert('Post published!')
+    if (!blogContent?.title || !blogContent?.author || !blogContent?.date || !blogContent?.description || !blogContent?.id) {
+    alert('you need to fill out all fields before publishing');
+    return;
+  }
+  patchBlog({
+    id: blogContent.id,
+    title: blogContent.title,
+    author: blogContent.author,
+    date: blogContent.date,
+    description: blogContent.description,
+    isPublished: true,
+    file: blogContent.file, 
+  })
+  
+  navigate({ to: "/admin-dashboard" });
   }
 
   const handleDelete = () => {

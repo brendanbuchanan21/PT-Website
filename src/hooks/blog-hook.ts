@@ -8,7 +8,7 @@ type blogData = {
     title: string
     author: string
     date: string
-    file: File
+    file?: File
     description: string
     isPublished: boolean
 }
@@ -22,6 +22,7 @@ type blogObject = {
     description: string
     isPublished: boolean
 }
+
 
 
 export function useGetBlogPosts() {
@@ -67,7 +68,9 @@ export function usePostBlog() {
             formData.append('author', data.author);
             formData.append('date', data.date);
             formData.append('description', data.description);
-            formData.append('file', data.file); 
+            if (data.file) {
+                formData.append('file', data.file);
+            }
             formData.append('isPublished', data.isPublished.toString());
 
             const auth = getAuth();
@@ -102,7 +105,9 @@ export function changeBlogPost() {
             formData.append('author', data.author);
             formData.append('date', data.date);
             formData.append('description', data.description);
-            formData.append('file', data.file); 
+            if (data.file) {
+                formData.append('file', data.file);
+            }
             formData.append('isPublished', data.isPublished.toString());
 
             const auth = getAuth();
