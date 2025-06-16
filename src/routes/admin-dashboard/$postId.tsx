@@ -1,49 +1,56 @@
 import { createFileRoute, useParams, useNavigate } from '@tanstack/react-router'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useUser } from '@/contexts/User-Context'
 import { useEditMode } from '@/contexts/Edit-mode-context'
 import Tiptap from '@/Tiptap'
+import { getBlogPostById } from '@/hooks/blog-hook'
+
+type blogObject = {
+    id: number
+    title: string
+    author: string
+    date: string
+    imageUrl: string
+    file?: File
+    description: string
+}
 
 export const Route = createFileRoute('/admin-dashboard/$postId')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const { postId } = useParams({ from: '/admin-dashboard/$postId' })
-  const navigate = useNavigate()
-  const user = useUser()
-  const { editMode } = useEditMode()
+  const { postId } = useParams({ from: '/admin-dashboard/$postId' });
+  const navigate = useNavigate();
+  const user = useUser();
+  const { editMode } = useEditMode();
 
-  // Initial Post State (mock, replace with fetched data)
-  const initialPost = {
-    id: postId,
-    title: '5 Essential Stretches for Lower Back Pain Relief',
-    date: 'June 1, 2025',
-    author: 'Dr. Jane Smith',
-    content: 'Lower back pain is one of the most common issues...',
-    status: 'Published',
-  }
-
-  const [title, setTitle] = useState(initialPost.title)
-  const [date, setDate] = useState(initialPost.date)
-  const [author, setAuthor] = useState(initialPost.author)
-  const [content, setContent] = useState(initialPost.content)
-
-  const [image, setImage] = useState<File | null>(null)
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
+    useEffect(() => {
     if (!user) {
       navigate({ to: '/admin-login' })
     }
-  }, [user, navigate])
+  }, [user, navigate]);
+
+
+  const { data, isLoading } = getBlogPostById(postId);
+  console.log('here is the individual post data potentially lol', data);
+
+  useEffect(() => {
+    if (data) {
+      setBlogContent(data);
+      setPreviewImage(data.imageUrl);
+    }
+  },[data]);
+
+  const [blogContent, setBlogContent] = useState<blogObject | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      setImage(file)
-      setPreviewUrl(URL.createObjectURL(file))
+      setPreviewImage(URL.createObjectURL(file))
+      setBlogContent(prev => prev ? {...prev, file } : prev);
     }
   }
 
@@ -55,7 +62,6 @@ function RouteComponent() {
 
   const handleSave = () => {
     // send `title`, `author`, `date`, `content`, `image` to backend
-    console.log({ title, author, date, content, image })
     alert('Changes saved!')
   }
 
@@ -85,12 +91,12 @@ function RouteComponent() {
         {editMode ? (
           <input
             type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={blogContent?.title}
+            onChange={(e) => setBlogContent(prev => prev ? {...prev, title: e.target.value} : prev)}
             className="text-4xl font-bold text-[#581845] mb-2 w-full border-b border-[#ccc] focus:outline-none bg-transparent"
           />
         ) : (
-          <h1 className="text-4xl font-bold text-[#581845] mb-2">{title}</h1>
+          <h1 className="text-4xl font-bold text-[#581845] mb-2">{blogContent?.title}</h1>
         )}
 
         {/* Metadata */}
@@ -99,19 +105,19 @@ function RouteComponent() {
             <>
               <input
                 type="text"
-                value={author}
-                onChange={(e) => setAuthor(e.target.value)}
+                value={blogContent?.author}
+                onChange={(e) => setBlogContent(prev => prev ? {...prev, author: e.target.value} : prev)}
                 className="border-b border-[#ccc] focus:outline-none bg-transparent w-fit"
               />
               <input
                 type="text"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
+                value={blogContent?.date}
+                onChange={(e) => setBlogContent(prev => prev ? {...prev, date: e.target.value} : prev)}
                 className="border-b border-[#ccc] focus:outline-none bg-transparent w-fit"
               />
             </>
           ) : (
-            <span>By {author} · {date}</span>
+            <span>By {blogContent?.author} · {blogContent?.date}</span>
           )}
         </div>
 
@@ -122,9 +128,9 @@ function RouteComponent() {
           }`}
           onClick={handleImageClick}
         >
-          {previewUrl ? (
+          {previewImage ? (
             <img
-              src={previewUrl}
+              src={previewImage ?? blogContent?.imageUrl}
               alt="Preview"
               className="w-full h-full object-cover rounded"
             />
@@ -142,7 +148,9 @@ function RouteComponent() {
 
         {/* Post Content - Tiptap */}
         <div className="prose prose-lg max-w-none text-[#424242] mb-8">
-          <Tiptap content={content} onChange={setContent} editable={editMode} />
+          <Tiptap content={blogContent?.description || ''} onChange={(newDescription: string) => {
+            setBlogContent(prev => prev ? {...prev, description: newDescription} : prev)
+          }} editable={editMode} />
         </div>
 
         {/* Post Action Buttons */}

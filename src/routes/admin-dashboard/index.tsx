@@ -3,31 +3,15 @@ import { useEffect, useState } from 'react'
 import { useUser } from '@/contexts/User-Context'
 import { useGetBlogPosts } from '@/hooks/blog-hook'
 
-{/*
-const mockPosts = [
-  {
-    id: 1,
-    title: '5 Essential Stretches for Lower Back Pain Relief',
-    date: 'June 1, 2025',
-    status: 'Published',
-  },
-  {
-    id: 2,
-    title: 'How to Improve Your Posture at Work',
-    date: 'May 15, 2025',
-    status: 'Draft',
-  },
-]
 
-*/}
-
-type blogData = {
+type blogObject = {
     id: number
     title: string
     author: string
     date: string
-    file: File
+    imageUrl: string
     description: string
+    isPublished: boolean
 }
 
 export const Route = createFileRoute('/admin-dashboard/')({
@@ -35,7 +19,7 @@ export const Route = createFileRoute('/admin-dashboard/')({
 })
 
 function RouteComponent() {
-  const [posts, setPosts] = useState<blogData[]>([])
+  const [posts, setPosts] = useState<blogObject[]>([]);
   const navigate = useNavigate();
   const user = useUser()
 
@@ -99,7 +83,7 @@ function RouteComponent() {
                 >
                   <td className="py-3 px-4 font-medium">{post.title}</td>
                   <td className="py-3 px-4">{post.date}</td>
-                  <td className="py-3 px-4">{post.status}</td>
+                  <td className="py-3 px-4">{post.isPublished === true ? "Published" : "Draft"}</td>
                 </tr>
               ))}
             </tbody>

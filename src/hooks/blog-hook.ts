@@ -4,12 +4,23 @@ import { getAuth } from "firebase/auth";
 import type { AxiosResponse } from "axios";
 
 type blogData = {
-    id: number
+    id?: number
     title: string
     author: string
     date: string
     file: File
     description: string
+    isPublished: boolean
+}
+
+type blogObject = {
+    id: number
+    title: string
+    author: string
+    date: string
+    imageUrl: string
+    description: string
+    isPublished: boolean
 }
 
 
@@ -28,8 +39,8 @@ export function useGetBlogPosts() {
     }})
 }
 
-export function getBlogPostById() {
-    return useQuery<blogData>({ queryKey: ['blogById'], queryFn: async (id) => {
+export function getBlogPostById(id: string) {
+    return useQuery<blogObject>({ queryKey: ['blogById', id], queryFn: async () => {
         const auth = getAuth();
         const user = auth.currentUser;
         if (!user) throw new Error("user not authenticated");
@@ -57,6 +68,7 @@ export function usePostBlog() {
             formData.append('date', data.date);
             formData.append('description', data.description);
             formData.append('file', data.file); 
+            formData.append('isPublished', data.isPublished.toString());
 
             const auth = getAuth();
             const user = auth.currentUser;

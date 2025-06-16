@@ -48,12 +48,15 @@ function RouteComponent() {
       alert("Please select");
       return;
     }
+    let isPublished = false;
+    
     postBlog.mutate({
       title,
       date,
       author,
       description,
       file,
+      isPublished,
     })
 
     navigate({ to: "/admin-dashboard" });
