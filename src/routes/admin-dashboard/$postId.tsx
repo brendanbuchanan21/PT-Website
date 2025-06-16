@@ -60,10 +60,6 @@ function RouteComponent() {
     }
   }
 
-  const handleSave = () => {
-    // send `title`, `author`, `date`, `content`, `image` to backend
-    alert('Changes saved!')
-  }
 
   const handlePublish = () => {
     alert('Post published!')
@@ -156,7 +152,7 @@ function RouteComponent() {
         {/* Post Action Buttons */}
         <div className="flex flex-wrap gap-4">
               <button
-        onClick={handleSave}
+      
         className="bg-[#FBC02D] text-[#581845] font-semibold px-5 py-2 rounded-md hover:bg-yellow-400 transition"
       >
         Save Changes
