@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react'
 import { useUser } from '@/contexts/User-Context'
 import { useEditMode } from '@/contexts/Edit-mode-context'
 import Tiptap from '@/Tiptap'
-import { getBlogPostById, changeBlogPost } from '@/hooks/blog-hook'
+import { getBlogPostById, changeBlogPost, deleteBlogPost } from '@/hooks/blog-hook'
 
 
 type blogObject = {
@@ -34,6 +34,10 @@ function RouteComponent() {
     isError,
     isPending,
   } = changeBlogPost();
+
+  const {
+    mutate: deletePost,
+  } = deleteBlogPost();
 
     useEffect(() => {
     if (!user) {
@@ -92,7 +96,8 @@ function RouteComponent() {
   const handleDelete = () => {
     const confirm = window.confirm('Are you sure you want to delete this post?')
     if (confirm) {
-      alert('Post deleted!')
+      deletePost(postId);
+      navigate({ to: "/admin-dashboard"});
     }
   }
 

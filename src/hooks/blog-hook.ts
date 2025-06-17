@@ -24,7 +24,7 @@ type blogObject = {
 }
 
 
-
+//GET ALL BLOG POSTS QUERY
 export function useGetBlogPosts() {
 
     return useQuery<blogObject[]>({ queryKey: ['blogPosts'], queryFn: async () => {
@@ -40,6 +40,7 @@ export function useGetBlogPosts() {
     }})
 }
 
+//GET REQUEST FOR INDIVIDUAL BLOG POST
 export function getBlogPostById(id: string) {
     return useQuery<blogObject>({ queryKey: ['blogById', id], queryFn: async () => {
         const auth = getAuth();
@@ -56,7 +57,7 @@ export function getBlogPostById(id: string) {
     
 
 
-
+// POSTING A BLOG POST TO THE DB
 export function usePostBlog() {
     const queryClient = useQueryClient();
 
@@ -94,6 +95,7 @@ export function usePostBlog() {
     })
 }
 
+// PATCH A BLOG POST 
 export function changeBlogPost() {
     const queryClient = useQueryClient();
 
@@ -130,4 +132,33 @@ export function changeBlogPost() {
             console.error("here is why the query failed:", error);
         }
     })
+}
+
+// DELETE BLOG POST
+export function deleteBlogPost() {
+    const queryClient = useQueryClient();
+
+    return useMutation<any, Error, string>({
+        mutationFn: async (id) => {
+            const auth = getAuth();
+            const user = auth.currentUser;
+            if (!user) throw new Error("couldn't validate the delete request");
+            const token = user?.getIdToken();
+            const response = await axios.delete(`http://localhost:8080/api/blog/delete/${id}`,
+                {
+                    headers: {Authorization: `Bearer ${token}`,
+                    withCredentials: true,
+                }
+                });
+                return response.data;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['blogPosts']});
+            console.log('success deleting the blog post');
+        },
+        onError: (error) => {
+            console.error("here is the reason why your query failed:", error);
+        }
+    })
+
 }
