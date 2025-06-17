@@ -128,24 +128,18 @@ export default function Header() {
           <Link onClick={() => setIsOpen(false)} to="/" className="hover:text-[#FBC02D]">
             Home
           </Link>
-          <Link onClick={() => setIsOpen(false)} to="/about" className="hover:text-[#FBC02D]">
+          <a onClick={() => setIsOpen(false)} href="#about" className="hover:text-[#FBC02D]">
             About Us
-          </Link>
-          <Link onClick={() => setIsOpen(false)} to="/services" className="hover:text-[#FBC02D]">
+          </a>
+          <a onClick={() => setIsOpen(false)} href='#services' className="hover:text-[#FBC02D]">
             Services
-          </Link>
-          <Link onClick={() => setIsOpen(false)} to="/conditions" className="hover:text-[#FBC02D]">
-            Conditions Treated
-          </Link>
-          <Link onClick={() => setIsOpen(false)} to="/testimonials" className="hover:text-[#FBC02D]">
-            Testimonials
-          </Link>
+          </a>
           <Link onClick={() => setIsOpen(false)} to="/blog" className="hover:text-[#FBC02D]">
             Blog
           </Link>
-          <Link onClick={() => setIsOpen(false)} to="/contact" className="hover:text-[#FBC02D]">
+          <a onClick={() => setIsOpen(false)} href="#contact" className="hover:text-[#FBC02D]">
             Contact
-          </Link>
+          </a>
         </nav>
 
         {/* Account Links (only if user logged in) */}
