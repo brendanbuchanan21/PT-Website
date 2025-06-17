@@ -11,12 +11,23 @@ export default function Tiptap({
   onChange: (html: string) => void
   editable: boolean
 }) {
+
+
+  function stripOuterTags(html: string): string {
+  return html
+    .replace(/^<(p|h2|h3)>(.*?)<\/\1>$/i, '$2') // match exact outer tag
+    .replace(/<\/?(p|h2|h3)>/gi, '')            // remove remaining opening/closing tags
+    .trim();
+}
+
   const editor = useEditor({
     extensions: [StarterKit],
     content,
     editable,
     onUpdate: ({ editor }) => {
-      onChange(editor.getHTML())
+      const rawHtml = editor.getHTML()
+      const cleanedHtml = stripOuterTags(rawHtml)
+      onChange(cleanedHtml)
     },
   })
 
