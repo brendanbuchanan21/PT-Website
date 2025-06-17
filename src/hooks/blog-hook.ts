@@ -28,29 +28,18 @@ export type blogObject = {
 export function useGetBlogPosts() {
 
     return useQuery<blogObject[]>({ queryKey: ['blogPosts'], queryFn: async () => {
-        const auth = getAuth();
-        const user = auth.currentUser;
-        if (!user) throw new Error("cannot query bloggs if not an active user");
-        const token = user?.getIdToken();
-        const { data } = await axios.get("http://localhost:8080/api/blog/posts", {
-            headers: {Authorization: `Bearer ${token}`},
-            withCredentials: true,
-        })
+        
+        const { data } = await axios.get("http://localhost:8080/api/blog/posts");
         return data;
     }})
 }
 
+
+
 //GET REQUEST FOR INDIVIDUAL BLOG POST
 export function getBlogPostById(id: string) {
     return useQuery<blogObject>({ queryKey: ['blogById', id], queryFn: async () => {
-        const auth = getAuth();
-        const user = auth.currentUser;
-        if (!user) throw new Error("user not authenticated");
-        const token = user?.getIdToken();
-        const { data } = await axios.get(`http://localhost:8080/api/blog/posts/${id}`, {
-            headers: {Authorization: `Bearer ${token}`},
-            withCredentials: true,
-        })
+        const { data } = await axios.get(`http://localhost:8080/api/blog/posts/${id}`);
         return data;
     }})
 }
