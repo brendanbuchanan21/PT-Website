@@ -13,7 +13,7 @@ type blogData = {
     isPublished: boolean
 }
 
-type blogObject = {
+export type blogObject = {
     id: number
     title: string
     author: string

@@ -20,15 +20,35 @@ function App() {
       <header>
        <HeroSection />
       </header>
-      <AboutUsSection />
+
+      <section id='about'>
+       <AboutUsSection />
+      </section>
+
+      <section id='services'>
       <ServicesOverviewSection />
+      </section>
+      
+      <section id='whyChooseUs'>
       <WhyChooseUsSection />
+      </section>
+      
+      <section id='testimonial'>
       <TestimonialsSection />
+      </section>
+
+      <section id='newsletter'>
       <NewsletterSignup />
+      </section>
+
+      <section id='footer-contact'>
       <Footer />
+      </section>
     </div>
   )
 }
+
+
 
 {/* Status colors: 
 Style Name

@@ -34,24 +34,21 @@ export default function Header() {
 
         {/* Desktop Nav */}
         <nav className="hidden lg:flex gap-6 text-sm font-medium">
-          <Link to="/" className="hover:text-[#FBC02D] transition">
+          <Link to='/' className="hover:text-[#FBC02D] transition">
             Home
           </Link>
-          <Link to="/about" className="hover:text-[#FBC02D] transition">
+          <a href='#about' className="hover:text-[#FBC02D] transition">
             About Us
-          </Link>
-          <Link to="/services" className="hover:text-[#FBC02D] transition">
+          </a>
+          <a href="#services" className="hover:text-[#FBC02D] transition">
             Services
-          </Link>
-          <Link to="/testimonials" className="hover:text-[#FBC02D] transition">
-            Testimonials
-          </Link>
+          </a>
           <Link to="/blog" className="hover:text-[#FBC02D] transition">
             Blog
           </Link>
-          <Link to="/contact" className="hover:text-[#FBC02D] transition">
+          <a href="#footer-contact" className="hover:text-[#FBC02D] transition">
             Contact
-          </Link>
+          </a>
         </nav>
 
         {/* Desktop Right Actions */}
