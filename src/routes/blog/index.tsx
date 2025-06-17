@@ -1,24 +1,29 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Link } from '@tanstack/react-router'
 import { useGetBlogPosts } from '@/hooks/blog-hook'
 import type { blogObject } from '@/hooks/blog-hook'
+import { useNavigate } from '@tanstack/react-router'
 
-
-
-
-
-export const Route = createFileRoute('/blog')({
+export const Route = createFileRoute('/blog/')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-
+  
   const {
     data,
-    isError
+    isLoading
   } = useGetBlogPosts();
 
+  const navigate = useNavigate();
 
+  const handleNavigatePost = (id: number) => {
+    navigate({
+        to: '/blog/$id',
+        params: { id: String(id)}
+    })
+  }
+
+  if (isLoading) return <p className='text-center pt-25'>Loading blogs...</p>
 
   return (
     <div className="bg-[#FFF8F1] min-h-screen px-4 py-20">
@@ -45,12 +50,12 @@ function RouteComponent() {
                   {post.description.length > 100 ? `${post.description.slice(0, 150)}...` 
                   : post.description}
                 </p>
-                <Link
-                  to="/Blog-post-page"
-                  className="text-[#FBC02D] font-semibold hover:underline text-sm"
+                <button
+                  onClick={() => handleNavigatePost(post.id)}
+                  className="text-[#FBC02D] font-semibold hover:underline text-sm cursor-pointer"
                 >
                   Read More →
-                </Link>
+                </button>
               </div>
             </div>
           ))}
