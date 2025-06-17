@@ -45,7 +45,7 @@ function RouteComponent() {
     // send new post data to backend
     console.log({ title, author, date, description, file })
     if (!title || !date || !author || !description || !file) {
-      alert("Please select");
+      alert("Please fill out all fields");
       return;
     }
     let isPublished = false;
@@ -65,7 +65,20 @@ function RouteComponent() {
   }
 
   const handlePublish = () => {
-    alert('New post published!')
+     if (!title || !date || !author || !description || !file) {
+      alert("Please fill out all fields");
+      return;
+    }
+
+    postBlog.mutate({
+      title,
+      date,
+      author,
+      description,
+      file,
+      isPublished: true
+    })
+    navigate({ to: "/admin-dashboard" });
   }
 
   
