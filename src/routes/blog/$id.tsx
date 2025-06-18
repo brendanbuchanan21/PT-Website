@@ -2,7 +2,7 @@ import { getBlogPostById } from '@/hooks/blog-hook';
 import { createFileRoute } from '@tanstack/react-router'
 import { Link } from '@tanstack/react-router'
 import { useParams } from '@tanstack/react-router'
-import type { blogObject } from '@/hooks/blog-hook';
+
 
 export const Route = createFileRoute('/blog/$id')({
   component: RouteComponent,
