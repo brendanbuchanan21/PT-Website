@@ -3,6 +3,7 @@ import axios from "axios";
 import { getAuth } from "firebase/auth";
 import type { AxiosResponse } from "axios";
 
+
 type blogData = {
     id?: number
     title: string
@@ -23,13 +24,14 @@ export type blogObject = {
     isPublished: boolean
 }
 
+const API_URL = import.meta.env.VITE_API_URL;
 
 //GET ALL BLOG POSTS QUERY
 export function useGetBlogPosts() {
 
     return useQuery<blogObject[]>({ queryKey: ['blogPosts'], queryFn: async () => {
         
-        const { data } = await axios.get("http://localhost:8080/api/blog/posts");
+        const { data } = await axios.get(`${API_URL}/api/blog/posts`);
         return data;
     }})
 }
@@ -39,7 +41,7 @@ export function useGetBlogPosts() {
 //GET REQUEST FOR INDIVIDUAL BLOG POST
 export function getBlogPostById(id: string) {
     return useQuery<blogObject>({ queryKey: ['blogById', id], queryFn: async () => {
-        const { data } = await axios.get(`http://localhost:8080/api/blog/posts/${id}`);
+        const { data } = await axios.get(`${API_URL}/api/blog/posts/${id}`);
         return data;
     }})
 }
@@ -67,7 +69,7 @@ export function usePostBlog() {
             const user = auth.currentUser;
             if (!user) throw new Error("couldn't validate the request");
             const token = await user.getIdToken();
-            return axios.post("http://localhost:8080/api/blog/create", formData, {
+            return axios.post(`${API_URL}/api/blog/create`, formData, {
                 headers: {Authorization: `Bearer ${token}`},
                 withCredentials: true
             });
@@ -106,7 +108,7 @@ export function changeBlogPost() {
             if (!user) throw new Error("couldn't validate the request");
             const token = user?.getIdToken();
 
-            const response = await axios.patch(`http://127.0.0.1:8080/api/blog/patch/${data.id}`, formData,
+            const response = await axios.patch(`${API_URL}/api/blog/patch/${data.id}`, formData,
                 {
                 headers: {Authorization: `Bearer ${token}`},
                 withCredentials: true,
@@ -133,7 +135,7 @@ export function deleteBlogPost() {
             const user = auth.currentUser;
             if (!user) throw new Error("couldn't validate the delete request");
             const token = await user.getIdToken();
-            const response = await axios.delete(`http://localhost:8080/api/blog/delete/${id}`, {
+            const response = await axios.delete(`${API_URL}/api/blog/delete/${id}`, {
                 headers: {Authorization: `Bearer ${token}`},
                 withCredentials: true,
             })
