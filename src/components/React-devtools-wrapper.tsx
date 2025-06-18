@@ -14,8 +14,9 @@ export default function ReactQueryProvider({ children }: { children: React.React
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-
-      {/* Devtools Toggle */}
+      {import.meta.env.DEV && (
+        <>
+        {/* Devtools Toggle */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="fixed bottom-4 right-4 bg-[#581845] text-white px-3 py-1 rounded shadow-lg z-50"
@@ -28,6 +29,11 @@ export default function ReactQueryProvider({ children }: { children: React.React
           <ReactQueryDevtoolsPanel onClose={() => setIsOpen(false)} />
         </div>
       )}
+        </>
+      )}
+      
+
+
     </QueryClientProvider>
   )
 }
