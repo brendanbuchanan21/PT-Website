@@ -66,7 +66,7 @@ export function usePostBlog() {
             const auth = getAuth();
             const user = auth.currentUser;
             if (!user) throw new Error("couldn't validate the request");
-            const token = user?.getIdToken();
+            const token = await user.getIdToken();
             return axios.post("http://localhost:8080/api/blog/create", formData, {
                 headers: {Authorization: `Bearer ${token}`},
                 withCredentials: true
