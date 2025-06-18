@@ -3,5 +3,4 @@
 # todo 
  
 * add toast notifications 
-* build api for the text in the hero section
-
+* fix when on blog page, the header links don't work

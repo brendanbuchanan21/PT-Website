@@ -132,14 +132,12 @@ export function deleteBlogPost() {
             const auth = getAuth();
             const user = auth.currentUser;
             if (!user) throw new Error("couldn't validate the delete request");
-            const token = user?.getIdToken();
-            const response = await axios.delete(`http://localhost:8080/api/blog/delete/${id}`,
-                {
-                    headers: {Authorization: `Bearer ${token}`,
-                    withCredentials: true,
-                }
-                });
-                return response.data;
+            const token = await user.getIdToken();
+            const response = await axios.delete(`http://localhost:8080/api/blog/delete/${id}`, {
+                headers: {Authorization: `Bearer ${token}`},
+                withCredentials: true,
+            })
+            return response.data;
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['blogPosts']});
