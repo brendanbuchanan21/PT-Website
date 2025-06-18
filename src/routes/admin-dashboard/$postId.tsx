@@ -31,8 +31,6 @@ function RouteComponent() {
   const { editMode } = useEditMode();
   const { 
     mutate: patchBlog,
-    isError,
-    isPending,
   } = changeBlogPost();
 
   const {
@@ -46,8 +44,7 @@ function RouteComponent() {
   }, [user, navigate]);
 
 
-  const { data, isLoading } = getBlogPostById(postId);
-  console.log('here is the individual post data potentially lol', data);
+  const { data } = getBlogPostById(postId);
 
   useEffect(() => {
     if (data) {

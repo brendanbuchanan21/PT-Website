@@ -31,7 +31,7 @@ function RouteComponent() {
   }, [user, navigate])
 
   // handle the fetching of blog posts
-  const { data, isLoading, error } = useGetBlogPosts();
+  const { data } = useGetBlogPosts();
   useEffect(() => {
     if (data) {
       setPosts(data);

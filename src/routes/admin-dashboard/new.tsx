@@ -43,7 +43,6 @@ function RouteComponent() {
 
   const handleSave = () => {
     // send new post data to backend
-    console.log({ title, author, date, description, file })
     if (!title || !date || !author || !description || !file) {
       alert("Please fill out all fields");
       return;

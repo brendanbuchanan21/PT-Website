@@ -75,13 +75,11 @@ export function usePostBlog() {
             });
         },
         onError: (error) => {
-            console.log("couldn't go through with post. an error occurred");
             console.error('here is the failed request error:', error)
         },
         onSuccess: () => {
             // need to invalidate the post to the get request for blogs 
             queryClient.invalidateQueries({ queryKey: ['blogPosts']});
-            console.log("good job posting successfully, bud.");
         }
     })
 }
@@ -117,7 +115,6 @@ export function changeBlogPost() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['blogPosts'] });
-            console.log('success! the backend patched the blog post');
         },
         onError: (error) => {
             console.error("here is why the query failed:", error);
@@ -143,7 +140,6 @@ export function deleteBlogPost() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['blogPosts']});
-            console.log('success deleting the blog post');
         },
         onError: (error) => {
             console.error("here is the reason why your query failed:", error);
