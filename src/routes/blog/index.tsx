@@ -2,7 +2,6 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useGetBlogPosts } from '@/hooks/blog-hook'
 import type { blogObject } from '@/hooks/blog-hook'
 import { useNavigate } from '@tanstack/react-router'
-import { useEffect } from 'react'
 
 export const Route = createFileRoute('/blog/')({
   component: RouteComponent,
