@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useGetBlogPosts } from '@/hooks/blog-hook'
 import type { blogObject } from '@/hooks/blog-hook'
 import { useNavigate } from '@tanstack/react-router'
+import { useEffect } from 'react'
 
 export const Route = createFileRoute('/blog/')({
   component: RouteComponent,
@@ -24,6 +25,8 @@ function RouteComponent() {
   }
 
   if (isLoading) return <p className='text-center pt-25'>Loading blogs...</p>
+
+  if (!data || data.length === 0) return <p>Blogs soon to come! Be on the lookout</p>
 
   return (
     <div className="bg-[#FFF8F1] min-h-screen px-4 py-20">
