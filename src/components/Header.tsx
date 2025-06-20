@@ -116,7 +116,8 @@ export default function Header() {
           >
             {editMode ? 'Exit Edit' : 'Edit Mode'}
           </button>
-
+            </>
+          )}
           {/* Hamburger Button (only visible on mobile/tablet) */}
           <button
             onClick={() => setIsOpen(true)}
@@ -125,8 +126,8 @@ export default function Header() {
           >
             ☰
           </button>
-            </>
-          )}
+            
+          
 
         </div>
       </div>
