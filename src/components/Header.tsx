@@ -103,7 +103,9 @@ export default function Header() {
         {/* MOBILE ACTIONS: Edit Mode Button & Hamburger Button */}
         <div className="lg:hidden flex items-center gap-2">
           {/* Edit Mode Button (only visible on mobile/tablet) */}
-          <button
+          {user !== null && (
+            <>
+            <button
             onClick={toggleEditMode}
             className={clsx(
               'px-3 py-1 rounded text-sm font-semibold transition cursor-pointer',
@@ -123,6 +125,9 @@ export default function Header() {
           >
             ☰
           </button>
+            </>
+          )}
+
         </div>
       </div>
 
