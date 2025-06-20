@@ -23,9 +23,17 @@ function RouteComponent() {
     })
   }
 
-  if (isLoading) return <p className='text-center pt-25'>Loading blogs...</p>
+  if (isLoading) {
 
-  if (!data || data.length === 0) return <p>Blogs soon to come! Be on the lookout</p>
+     return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <div className="w-16 h-16 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
+        <p className="mt-6 text-lg text-gray-700">Loading blog posts… this may take a minute, literally.</p>
+      </div>
+     )
+
+  }
+  if (!data || data.length === 0) return <p className='text-center'>Blogs soon to come! Be on the lookout</p>
 
   return (
     <div className="bg-[#FFF8F1] min-h-screen px-4 py-20">
