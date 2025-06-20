@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { useNavigate, useLocation, Link } from '@tanstack/react-router'
 import clsx from 'clsx'
 import { FaUserCircle } from 'react-icons/fa'
 import { useUser } from '@/contexts/User-Context'
@@ -11,9 +11,10 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
 
-  const navigate = useNavigate()
-  const user = useUser()
-  const { editMode, toggleEditMode } = useEditMode()
+  const navigate = useNavigate();
+  const location = useLocation();
+  const user = useUser();
+  const { editMode, toggleEditMode } = useEditMode();
 
   const handleSignOut = async () => {
     try {
@@ -23,6 +24,23 @@ export default function Header() {
       console.error(error)
     }
   }
+
+  const handleAnchorClick = (hash: string) => {
+    if (location.pathname !== '/') {
+      navigate({ to: '/' })
+
+      // Delay scroll to allow homepage to mount
+      setTimeout(() => {
+        const el = document.getElementById(hash)
+        el?.scrollIntoView({ behavior: 'smooth' })
+      }, 100)
+    } else {
+      const el = document.getElementById(hash)
+      el?.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
+
 
   return (
     <header className="sticky top-0 z-50 bg-[#581845] text-white shadow-md">
@@ -37,18 +55,18 @@ export default function Header() {
           <Link to='/' className="hover:text-[#FBC02D] transition">
             Home
           </Link>
-          <a href='#about' className="hover:text-[#FBC02D] transition">
+          <button onClick={() => handleAnchorClick('about')} className="hover:text-[#FBC02D] transition">
             About Us
-          </a>
-          <a href="#services" className="hover:text-[#FBC02D] transition">
+          </button>
+          <button onClick={() => handleAnchorClick('services')} className="hover:text-[#FBC02D] transition">
             Services
-          </a>
+          </button>
           <Link to="/blog" className="hover:text-[#FBC02D] transition">
             Blog
           </Link>
-          <a href="#footer-contact" className="hover:text-[#FBC02D] transition">
+          <button onClick={() => handleAnchorClick('footer-contact')} className="hover:text-[#FBC02D] transition">
             Contact
-          </a>
+          </button>
         </nav>
 
         {/* Desktop Right Actions */}
@@ -128,18 +146,27 @@ export default function Header() {
           <Link onClick={() => setIsOpen(false)} to="/" className="hover:text-[#FBC02D]">
             Home
           </Link>
-          <a onClick={() => setIsOpen(false)} href="#about" className="hover:text-[#FBC02D]">
+          <button onClick={() => {
+            handleAnchorClick('about')
+            setIsOpen(false)}} 
+            className="hover:text-[#FBC02D] text-left">
             About Us
-          </a>
-          <a onClick={() => setIsOpen(false)} href='#services' className="hover:text-[#FBC02D]">
+          </button>
+          <button onClick={() => {
+            setIsOpen(false)
+            handleAnchorClick('services')
+          }} className="hover:text-[#FBC02D] text-left">
             Services
-          </a>
+          </button>
           <Link onClick={() => setIsOpen(false)} to="/blog" className="hover:text-[#FBC02D]">
             Blog
           </Link>
-          <a onClick={() => setIsOpen(false)} href="#contact" className="hover:text-[#FBC02D]">
+          <button onClick={() => { 
+            setIsOpen(false);
+            handleAnchorClick('footer-contact');
+            }} className="hover:text-[#FBC02D] text-left">
             Contact
-          </a>
+          </button>
         </nav>
 
         {/* Account Links (only if user logged in) */}
